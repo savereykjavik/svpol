@@ -2,6 +2,7 @@ var tree = {"name" : "flare", "children": []};
 
 var secObj = {};
 var primary = "hej";
+var primcolor = [];
 var budgetFix = [];
 var s = "foo";
 var bar = 0;
@@ -39,6 +40,7 @@ function getbudget(callback) {
 					var primary = budgetFix[i].primary;
 
 					primObj[primary] = budgetFix[i].sum;
+					primcolor.push(primary);
 				}
 			}
 
