@@ -52,11 +52,11 @@
 	<div><h1>Sveriges budgetproposition</h1></div>
 	<form>
 	  <label><input type="radio" name="mode" value="size" checked> Regeringen</label>
-	  <label><input type="radio" name="mode" value="count"> Alliansen</label>
+	  <label><input type="radio" name="mode" value="size2"> Alliansen</label>
 	</form>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript" ></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-   	<script src="getbudgetNew.js" type="text/javascript"></script>
+   	<script src="getbudget.js" type="text/javascript"></script>
    	<script src="colorbrewer.js" type="text/javascript"></script>
 	<script>
 
@@ -67,12 +67,13 @@
 		    width = 980 - margin.left - margin.right,
 		    height = 600 - margin.top - margin.bottom;
 
-		var color = d3.scale.category20b();
+	  	// var color = d3.scale.category20b();
 
-		var o = d3.scale.ordinal()
-			.domain([primcolor])
-   		 	.range(colorbrewer.YlGn[3]);
+		// var o = d3.scale.ordinal()
+  		// .range(colorbrewer.YlGn[3]);
 
+
+  		// treemap är funktionen som genererar vårt data, tar root (vårt object).
 		var treemap = d3.layout.treemap()
 			.children(function(d, depth) { return depth >= 1 ? null : d.children; })
 		    .size([width, height])
@@ -82,6 +83,7 @@
 			  return a.value - b.value;
 			});
 
+		// var div lägger till en div till vår body, som vi sedan kan rita i
 		var div = d3.select("body").append("div")
 		    .style("position", "relative")
 		    .style("width", (width + margin.left + margin.right) + "px")
@@ -89,54 +91,76 @@
 		    .style("left", margin.left + "px")
 		    .style("top", margin.top + "px");
 
-		function drawtree(root) {
-			var node = div.datum(root).selectAll(".node")
-			  	.data(treemap.nodes)
-				.enter().append("div")
-					.attr("class", "node")
-					.call(position)
-					.style("background", "white")
-					.append('div')
-						.attr("class", "content")
-						.style("background", function(d) { return o(d.name); })
-						.style("margin", "0px")
-						.style("border-radius", function(d) { if (d.value > 12000000) {
-								return "7px"; 
-							} else {
-								return "3px";
-							}
-						})
-						.style("height", function (d) {
-							return d.dy - 22 + "px";
-						})
-						.style("width", function (d) {
-							return d.dx - 22 + "px";
-						})
-					.html(function(d) { if (d.value > 12000000) {
-						return d.children ? null : (Math.round(d.value * 0.000001)) + " milj.  " + "<br>" + d.name; }
-					});
 
-			d3.selectAll("input").on("change", function change() {
-			var value = this.value === "count"
-			    ? function() { return 1; }
+		// ritar vår grejj
+		function drawtree(root) {
+
+			// spara data som gått genom treemap i data
+			var data = treemap.nodes(root);
+			console.log(data);
+
+			// gör en linear scale för färg, som tar ut minsta och största diff
+			var o = d3.scale.linear()
+				.domain([
+					d3.min(data, function(d) { return d.diff*1; }),
+					-1,
+					0,
+					1,
+					d3.max(data, function(d) { return d.diff*1; })
+				])
+	  			.range(["red", "white", "blue", "white", "green"]);
+
+
+	  		// node, ritar ut vår grafik
+			var node = div.selectAll(".node")
+			  	.data(data)
+				.enter().append("div")
+				.attr("class", "node")
+
+				.style("left", function(d) { return d.x + "px"; })
+			    .style("top", function(d) { return d.y + "px"; })
+			    .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+			    .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; })
+				.style("background", "white")
+				.append('div')
+					.attr("class", "content")
+					.style("background", function(d) { return o(d.diff); })
+					.style("margin", "0px")
+					.style("border-radius", function(d) { if (d.value > 12000000) {
+							return "7px"; 
+						} else {
+							return "3px";
+						}
+					})
+					.style("height", function (d) {
+						return d.dy - 23 + "px";
+					})
+					.style("width", function (d) {
+						return d.dx - 23 + "px";
+					})
+				.html(function(d) { if (d.value > 12000000) {
+					return d.children ? null : (Math.round(d.value * 0.000001)) + " milj.  " + "<br>" + d.name  + "<br>" + (Math.round(d.diff*1 * 0.001)) + " miljoner "; }
+				});
+
+
+		};
+
+		getbudget(drawtree);
+
+		d3.selectAll("input").on("change", function change() {
+			var value = this.value === "size2"
+			    ? function(d) { return d.size2;}
 			    : function(d) { return d.size; };
 
 			node.data(treemap.value(value).nodes)
 			  	.transition()
-			    	.duration(1500)
+			    	.duration(1000)
 			    	.call(position);
-			});
-		}
-
-		getbudget(drawtree);
+			 drawtree();
+		});
 	}
 
-	function position() {
-	  this.style("left", function(d) { return d.x + "px"; })
-	      .style("top", function(d) { return d.y + "px"; })
-	      .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
-	      .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
-	}
+
 
 	</script>
 

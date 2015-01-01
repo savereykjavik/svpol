@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<style>
+
+
+		body {
+		  font-family: "Exo 2", "Helvetica Neue", Helvetica, sans-serif;
+		  margin: auto;
+		  position: relative;
+		  width: 980px;
+    	  height:100%;
+		}
+
+		p {
+
+		  margin: 0px;
+		  font-weight: 200;
+
+		}
+		.text {
+			padding-top: 9px;
+			padding-left: 9px;
+			word-wrap: break-word;
+			overflow: hidden;
+			text-align: left;
+			word-wrap: break-word;
+			display: table-cell;
+		}
+		p.line1 {
+			font-size: 30px;
+			line-height: 28px;
+			margin-bottom: 2px;
+			font-weight: 150;
+		}
+
+		p.line2 {
+			font-size: 9px;
+			margin-bottom: 5px;
+		}
+
+		p.mini {
+			font-size: 8px;
+			margin-bottom: 5px;
+			position: absolute; bottom: 0; left: 0;
+		}
+
+		p.line3 {
+			font-size: 11px;
+			margin-bottom: 5px;
+			font-weight: 250;
+			font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+		}
+
+		.details {
+			position: relative;
+			float: left;
+		}
+
+		h1 {
+		  font-family: "Helvetica Neue", Helvetica, sans-serif;
+		  font-weight: 200;
+		  font-size: 2em;
+		  padding-top: 15px;
+		  text-align: left;
+		  padding-left: 20px;
+		}
+
+
+		.node {
+		  border: solid 1px white;
+		  font-family: "Exo 2", "Helvetica Neue", Helvetica, sans-serif;
+		  font-size: 11px;
+		  color: white;
+		  line-height: 12px;
+		  overflow: hidden;
+		  position: absolute;
+		  border: 0px;
+
+		}
+
+		.node .content {
+			padding: 0px;
+
+		}
+
+	</style>
+</head>
+
+<body>
+	<div><h1>Röd budget från Alliansen</h1></div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript" ></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+   	<script src="getbudget.js" type="text/javascript"></script>
+   	<script src="colorbrewer.js" type="text/javascript"></script>
+
+   	<div id="main"></div>
+
+   	<h1>Skillnaderna</h1>
+   	<div id="details"></div>
+
+	<script>
+
+	jQuery(init);
+
+	function init() {
+		var margin = {top: 40, right: 10, bottom: 10, left: 10},
+		    width = 980 - margin.left - margin.right,
+		    height = 600 - margin.top - margin.bottom;
+
+
+  		// treemap är funktionen som genererar vårt data, tar root (vårt object).
+		var treemap = d3.layout.treemap()
+			.children(function(d, depth) { return depth >= 1 ? null : d.children; })
+		    .size([width, height])
+		    .sticky(true)
+		    .value(function(d) { return d.size; })
+		    .sort(function comparator(a, b) {
+			  return a.value - b.value;
+			})
+			;
+
+		// var div lägger till en div till vår main div, som vi sedan kan rita i
+		var div = d3.select("#main").append("div")
+			.attr("id", "chart")
+		    .style("position", "relative")
+		    .style("width", (width + margin.left + margin.right) + "px")
+		    .style("height", (height + margin.top + margin.bottom) + "px")
+		    .style("left", margin.left + "px")
+		    .style("top", margin.top + "px");
+
+
+		// ritar vår grejj
+		function drawtree(root) {
+
+			// spara data som gått genom treemap i data
+			var data = treemap.nodes(root);
+			console.log(data);
+
+			// gör en linear scale för färg, som tar ut minsta och största diff
+			var o = d3.scale.linear()
+				.domain([
+					d3.min(data, function(d) { return d.diff*1; }),
+					d3.min(data, function(d) { return d.diff*1; })*0.5,
+					-1,
+					0,
+					1,
+					d3.max(data, function(d) { return d.diff*1; })*0.5,
+					d3.max(data, function(d) { return d.diff*1; })
+				])
+	  			.range(colorbrewer.mycolors[7]);
+
+	  		// ny, bound modell. bound binder data till alla classed node
+	  		var bound = d3.select('#chart')
+	  			.selectAll(".node")
+	  			.data(data);
+
+	  		    // new - enter the data
+    		bound.enter().append('div')
+        		.attr("class", "node")
+        		// position the divs
+        		.style("left", function(d) { return d.x + "px"; })
+			    .style("top", function(d) { return d.y + "px"; })
+			    .style("width", function(d) { return Math.max(0, d.dx) + "px"; })
+			    .style("height", function(d) { return Math.max(0, d.dy) + "px"; })
+				.style("background", "white")
+
+				//now we append divs to the divs
+				.append('div')
+					.attr("class", "content")
+					.style("background", function(d) { return o(d.diff); })
+					.style("margin", "0px")
+					.style("opacity", 0.8)
+					.style("border-radius", function(d) { if (d.value > 12000000) {
+							return "7px"; 
+						} else {
+							return "3px";
+						}
+					})
+					.style("height", function (d) {
+						return (d.dy - 2) + "px";
+					})
+					.style("width", function (d) {
+						return (d.dx - 2) + "px";
+					})
+
+				.append('div')
+					.classed('text', true)
+					// and we append some text
+					.html(function(d) { 
+						console.log(d.children)
+						if (d.value > 10000000) {
+							return d.children ? null :
+								"<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
+								"<p class='line2'>" + addplus(d) + diffish(d) + " </p>" +
+								"<p class='line3'>" + nameish(d) + "</p>";
+						}
+					})
+				.append('div')
+        		.attr("class", "boxbox")
+					.style("background", "white")
+					.style("margin", "0px")
+					.style("opacity", 0.8)
+					.style("border-radius", "2px")
+					.style("height", function (d) {
+						return Math.pow((d.dx * d.dy * Math.abs(d.diff*1)/d.value), 1/2) + "px";
+					})
+					.style("width", function (d) {
+						return Math.pow((d.dx * d.dy * Math.abs(d.diff*1)/d.value), 1/2) + "px";
+					})
+				;
+
+			// ny, bound modell. bound binder data till alla classed node
+	  		var bound2 = d3.select('#details')
+	  			.selectAll(".node")
+	  			.data(data);
+
+	  		// new - enter the data
+    		bound2.enter().append('div')
+        		.attr("class", "details")
+					.style("background", function(d) { return o(d.diff); })
+					.style("margin", "0px")
+					.style("opacity", 0.8)
+					.style("border-radius", function(d) { if (d.value > 12000000) {
+							return "0px"; 
+						} else {
+							return "0px";
+						}
+					})
+					.style("height", function (d) {
+						return d.dx * (d.dy * Math.abs(d.diff*1)/d.value)/20 + "px";
+					})
+					.style("width", function (d) {
+						return 20 + "px";
+					})
+					.style("margin", "5px")
+					.html(function(d) {
+						return d.children ? null :  "<p class='mini'>" + d.diff + "</br>" + nameish(d) + "</p>" ;
+					});
+
+
+
+		};
+
+		var nameish = function(d) {
+			if (d.value < 21000000) {
+				return (d.name.split(/\s+/).slice(0,1).join(" ").replace(/,\s*$/, "") + "...");
+			} else {
+				return d.name;
+			}
+		};
+
+		var diffish = function(d) {
+			if (d.diff*1 != 0) {
+				return ((Math.round(d.diff*1 * 0.001)) + " miljoner"); 
+			} else {
+				return "Oförändrad"
+			}
+		};
+
+		var addplus = function(d) {
+			return d.diff*1 > 0 ? "+" : "";
+		};
+
+		getbudget(drawtree);
+
+	}
+
+
+
+	</script>
+
+</body>
+</html>
