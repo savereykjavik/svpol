@@ -23,8 +23,8 @@ p {
 	display: table-cell;
 }
 p.line1 {
-	font-size: 30px;
-	line-height: 28px;
+	font-size: 20px;
+	line-height: 18px;
 	margin-bottom: 2px;
 	font-weight: 150;
 }

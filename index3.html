@@ -26,8 +26,8 @@
 
 	function init() {
 		var margin = {top: 40, right: 10, bottom: 10, left: 10},
-			width = 980 - margin.left - margin.right,
-			height = 600 - margin.top - margin.bottom;
+			width = 700 - margin.left - margin.right,
+			height = 450 - margin.top - margin.bottom;
 
 		var height2 = 120;
 		var margin2 = {top: 10, right: 10, bottom: 10, left: 10};
@@ -53,17 +53,14 @@
 		// linear scale för skillnad i procent diff
 		var u = d3.scale.linear()
 			.domain([
-				-0.1
 				-0.01,
 				-0.001,
-				-0.000000000000001,
+				-0.0001,
 				0,
 				0.001,
-				0.0000000000000001,
 				0.01,
-				0.1
 			])
-			.range(colorbrewerMod.GnRd[9]);
+			.range(colorbrewerMod.Reporter[6]);
 
 		// var div lägger till en div till vår main div, som vi sedan kan rita i
 		var div = d3.select("#main").append("div")
@@ -116,16 +113,12 @@
 			var o = d3.scale.linear()
 				.domain([
 					d3.min(data, function(d) { return d.diff*1; }),
-					d3.min(data, function(d) { return d.diff*1; })*1/3,
-					d3.min(data, function(d) { return d.diff*1; })*2/3,
+					d3.min(data, function(d) { return d.diff*1; }) *1/2,
 					-1,
 					0,
-					1,
-					d3.max(data, function(d) { return d.diff*1; })*1/3,
-					d3.max(data, function(d) { return d.diff*1; })*2/3,
 					d3.max(data, function(d) { return d.diff*1; })
 				])
-				.range(colorbrewerMod.GnRd[9]);
+				.range(colorbrewerMod.Reporter[6]);
 
 			function procentdiffish(d) {
 				return (d.value + d.diff*1)/oldfullvalue - d.value/fullvalue;
@@ -151,7 +144,7 @@
 			}
 
 			function nameish(d) {
-				if (d.value < 21000000) {
+				if (d.value < 2100000) {
 					return (d.name.split(/\s+/).slice(0,1).join(" ").replace(/,\s*$/, "") + "...");
 				} else {
 					return d.name;
@@ -190,7 +183,7 @@
 
 				// update - sker efter enter.append - sker alltså även vid uppdatering
 				bound.select('.content')
-					// .style("background", colorfun);
+					.style("background", colorfun);
 
 				// new - enter the data
 				bound.enter()
@@ -225,8 +218,8 @@
 					.style("width", function(d) { return Math.max(0, x(d.dx)) + "px"; })
 					.style("height", function(d) { return Math.max(0, y(d.dy)) + "px"; });
 				bound.select('.content')
-					.style("width", function (d) { return (x(d.dx) - 2) + "px"; })
-					.style("height", function (d) { return (y(d.dy) - 2) + "px"; });
+					.style("width", function (d) { return (x(d.dx) - 1) + "px"; })
+					.style("height", function (d) { return (y(d.dy) - 1) + "px"; });
 
 				bound.filter(function(d) { return d._children; })
 					.classed("children", true)
