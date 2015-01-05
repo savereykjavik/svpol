@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 
 <body>
@@ -30,17 +29,41 @@
 			width = 980 - margin.left - margin.right,
 			height = 600 - margin.top - margin.bottom;
 
-		var savedRoot;
-		var percentColor = true;
+		var height2 = 120;
+		var margin2 = {top: 10, right: 10, bottom: 10, left: 10};
+
+		//Sätter en x-scale
+		var x = d3.scale.linear()
+			.domain([0, 1])
+			.range([0, width]);
+
+		//sätter en y-scale
+		var y = d3.scale.linear()
+			.domain([0, 1])
+			.range([0, height]);
 
 		// treemap är funktionen som genererar vårt data, tar root (vårt object).
 		var treemap = d3.layout.treemap()
-			.children(function(d, depth) { return depth ? null : d.children; })
-			.size([width, height])
-			.sticky(true)
+			.children(function(d, depth) { return depth ? null : d._children; })
 			.round(false)
+			.ratio(height/width)
 			.value(function(d) { return d.size; })
 			.sort(function comparator(a, b) { return a.value - b.value; });
+
+		// linear scale för skillnad i procent diff
+		var u = d3.scale.linear()
+			.domain([
+				-0.1
+				-0.01,
+				-0.001,
+				-0.000000000000001,
+				0,
+				0.001,
+				0.0000000000000001,
+				0.01,
+				0.1
+			])
+			.range(colorbrewerMod.GnRd[9]);
 
 		// var div lägger till en div till vår main div, som vi sedan kan rita i
 		var div = d3.select("#main").append("div")
@@ -51,30 +74,41 @@
 			.style("margin-left", margin.left + "px")
 			.style("margin-top", margin.top + "px");
 
-		// on click of color button ropar på draw tree, och färgerna sätts om
-		jQuery("#colorbutton").click(function() {
-			percentColor = !percentColor;
-			drawtree(savedRoot);
-		});
-
+		var div2 = d3.select("#details").append("div")
+			.attr("id", "chart2")
+			.style("position", "relative")
+			.style("width", (width + margin2.left + margin2.right) + "px")
+			.style("height", (height2 + margin2.top + margin2.bottom) + "px")
+			.style("left", margin2.left + "px")
+			.style("top", margin2.top + "px")
+			.append('svg')
+				.attr('width', '100%')
+				.attr('height', '100%')
+				.append('g');
 
 		// ritar vår grejj
 		function drawtree(root) {
-			savedRoot = root;
+			copyChildren(root);
+			setup(root);
+		}
+
+		function copyChildren(d) {
+			if (d._children = d.children) {
+				d.children.forEach(copyChildren);
+			}
+		}
+
+		function setup(root) {
+			window.data = root;
 
 			// spara data som gått genom treemap i data
 			var data = treemap.nodes(root);
-			console.log(data);
 
-			var ratio = data[0].area/data[0].value;
+			var percentColor = false;
 			var fullvalue = data[0].value;
-			console.log(fullvalue);
+			var ratio = width*height / fullvalue;
 			var fulldiff = -17100000;
 			var oldfullvalue = fullvalue + fulldiff;
-
-			var procentdiffish = function(d) {
-				return (d.value + d.diff*1)/oldfullvalue - d.value/fullvalue;
-			}
 
 			// gör en linear scale för färg, som tar ut minsta och största diff
 			var o = d3.scale.linear()
@@ -91,94 +125,131 @@
 				])
 				.range(colorbrewerMod.GnRd[9]);
 
-			// linear scale för skillnad i procent diff
-			var u = d3.scale.linear()
-				.domain([
-					-0.1
-					-0.01,
-					-0.001,
-					-0.000000000000001,
-					0,
-					0.001,
-					0.0000000000000001,
-					0.01,
-					0.1
-				])
-				.range(colorbrewerMod.GnRd[9]);
+			function procentdiffish(d) {
+				return (d.value + d.diff*1)/oldfullvalue - d.value/fullvalue;
+			}
 
 			// funktion som kollar om percentcolor är "true", vilket avgör vilken färg som divsen får
-			var colorfun = function(d) {
+			function colorfun(d) {
 				return percentColor
 					? u(procentdiffish(d))
 					: o(d.diff);
 			}
 
-			var textfun = function(d) {
-				return percentColor ? "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
-						"<p class='line2'> from " + Math.round(d.value/fullvalue * 1000)/10 + "% to " + Math.round((d.value + d.diff*1)/ oldfullvalue *1000)/10 + "% </p>" +
+			function textfun(d) {
+				return percentColor
+					?	"<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
+						"<p class='line2'> from " + Math.round(d.value/fullvalue * 1000)/10 + "% to " +
+							Math.round((d.value + d.diff*1)/ oldfullvalue *1000)/10 + "% </p>" +
 						"<p class='line3'>" + nameish(d) + "</p>"
 
-					: "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
+					:	"<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
 						"<p class='line2'>" + addplus(d) + diffish(d) + " </p>" +
 						"<p class='line3'>" + nameish(d) + "</p>";
 			}
 
-			// bound modell. bound binder data till alla classed node
-			var bound = d3.select('#chart')
-				.selectAll(".node")
-				.data(data);
+			function nameish(d) {
+				if (d.value < 21000000) {
+					return (d.name.split(/\s+/).slice(0,1).join(" ").replace(/,\s*$/, "") + "...");
+				} else {
+					return d.name;
+				}
+			}
 
-			bound.select('div.text')
-				.html(function(d) {
-					if (d.value > 10000000) {
-						return textfun(d);
-					}
-				});
+			function diffish(d) {
+				if (d.diff*1 != 0) {
+					return ((Math.round(d.diff*1 * 0.001)) + " miljoner");
+				} else {
+					return "Oförändrad"
+				}
+			}
 
-			// update - sker efter enter.append - sker alltså även vid uppdatering
-			bound.select('div.content')
-				.style("background", colorfun);
+			function addplus(d) {
+				return d.diff*1 > 0 ? "+" : "";
+			}
 
-			// new - enter the data
-			bound.enter().append('div')
-				.attr("class", "node")
-				// position the divs
-				.style("left", function(d) { return d.x + "px"; })
-				.style("top", function(d) { return d.y + "px"; })
-				.style("width", function(d) { return Math.max(0, d.dx) + "px"; })
-				.style("height", function(d) { return Math.max(0, d.dy) + "px"; })
-				.style("background", "white")
+			function display(rootNode) {
+				var data = treemap.nodes(rootNode);
+				console.log(data);
 
-				//now we append divs to the divs
-				.append('div')
-					.attr("class", "content")
-					.style("margin", "0px")
-					.style("opacity", 1)
-					.style("background", "#b3e2cd")
-					.style("border-radius", function(d) { if (d.value > 12000000) {
-							return "4px";
-						} else {
-							return "2px";
-						}
-					})
-					.style("height", function (d) {
-						return (d.dy - 2) + "px";
-					})
-					.style("width", function (d) {
-						return (d.dx - 2) + "px";
-					})
+				// bound modell. bound binder data till alla classed node
+				var bound = d3.select('#chart')
+					.selectAll(".node")
+					.data(data.filter(function(d) { return d.depth; }));
 
-				.append('div')
-					.classed('text', true)
-					// and we append some text
+				bound.select('.text')
 					.html(function(d) {
-						if (d.value > 10000000) {
-							return "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>";
+						if (d.value > 1000000) {
+							return textfun(d);
+						} else {
+							return '';
 						}
-					})
-				;
+					});
 
+				// update - sker efter enter.append - sker alltså även vid uppdatering
+				bound.select('.content')
+					// .style("background", colorfun);
 
+				// new - enter the data
+				bound.enter()
+					.append('div')
+					.classed("node", true)
+						//now we append divs to the divs
+						.append('div')
+						.classed("content", true)
+						.style("margin", "0px")
+						.style("background", "#b3e2cd")
+						.style("border-radius", function(d) {
+							return d.value > 12000000
+								? "4px"
+								: "2px";
+						})
+							.append('div')
+							.classed('text', true)
+							// and we append some text
+							.html(function(d) {
+								if (d.value > 1000000) {
+									return "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>";
+								}
+							});
+
+				// position the divs
+				bound
+					.classed("children", false)
+					.on("click", null)
+					.style("left", function(d) { return x(d.x) + "px"; })
+					.style("top", function(d) { return y(d.y) + "px"; })
+					.style("width", function(d) { return Math.max(0, x(d.dx)) + "px"; })
+					.style("height", function(d) { return Math.max(0, y(d.dy)) + "px"; });
+				bound.select('.content')
+					.style("width", function (d) { return (x(d.dx) - 2) + "px"; })
+					.style("height", function (d) { return (y(d.dy) - 2) + "px"; });
+
+				bound.filter(function(d) { return d._children; })
+					.classed("children", true)
+					.on("click", zoom);
+
+				bound.exit().remove();
+			}
+
+			// ################################################################
+
+			var zoomNode = root;
+
+			function zoom(d) {
+				zoomNode = d;
+				display(zoomNode);
+			}
+
+			// on click of color button ropar på display, och färgerna sätts om
+			jQuery("#colorbutton").click(function() {
+				percentColor = !percentColor;
+				display(zoomNode);
+			});
+
+			display(zoomNode);
+
+			// ################################################################
 
 
 			// Rita ut alla småboxar
@@ -190,7 +261,7 @@
 			var xOffset = 0;
 
 			data.forEach( function(d) {
-				if (d.children == null) {
+				if (d.depth == 1) {
 					d.diffside = Math.pow(Math.abs(d.diff * 1) * ratio, 1/2);
 					lista.push(d);
 				}
@@ -205,62 +276,20 @@
 				xOffset += (d.diffside + 5);
 			});
 
-			var height2 = 120;
-			var margin2 = {top: 10, right: 10, bottom: 10, left: 10};
-
-			// Var div lägger till en div till vår main div, som vi sedan kan rita i
-			var div2 = d3.select("#details").append("div")
-				.attr("id", "chart2")
-				.style("position", "relative")
-				.style("width", (width + margin2.left + margin2.right) + "px")
-				.style("height", (height2 + margin2.top + margin2.bottom) + "px")
-				.style("left", margin2.left + "px")
-				.style("top", margin2.top + "px");
-
 			// Ny, bound modell. bound binder data till alla classed node
-			var bound2 = d3.select('#chart2')
-				.append('svg')
-				.attr('width', '100%')
-				.attr('height', '100%')
-				.selectAll(".node")
+			var bound2 = div2.selectAll(".diff-node")
 				.data(lista);
 
 			bound2.enter()
-				.append('g')
-					.attr("transform", function(d) {
-						return "translate(" + d.xOffset + "," + (height2 - d.diffside) + ")";
-					})
-					.append('rect')
+				.append('rect')
+					.classed('diff-node', true)
+					.attr("x", function(d) { return d.xOffset; })
+					.attr("y", function(d) { return (height2 - d.diffside); })
+					.attr("width", function (d) { return d.diffside; })
+					.attr("height", function (d) { return d.diffside; })
 					.attr("fill", function(d) { return o(d.diff); })
-					.attr("width", function (d) {
-						return d.diffside;
-					})
-					.attr("height", function (d) {
-						return d.diffside;
-					})
 			;
 		};
-
-		var nameish = function(d) {
-			if (d.value < 21000000) {
-				return (d.name.split(/\s+/).slice(0,1).join(" ").replace(/,\s*$/, "") + "...");
-			} else {
-				return d.name;
-			}
-		};
-
-		var diffish = function(d) {
-			if (d.diff*1 != 0) {
-				return ((Math.round(d.diff*1 * 0.001)) + " miljoner");
-			} else {
-				return "Oförändrad"
-			}
-		};
-
-		var addplus = function(d) {
-			return d.diff*1 > 0 ? "+" : "";
-		};
-
 
 		getbudget(drawtree);
 

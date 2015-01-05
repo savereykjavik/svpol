@@ -10,8 +10,6 @@ function getbudget(callback) {
 
 		function(data) {
 
-			console.log(data.feed.entry.length);
-
 			// go through result and store wanted parameters in a new object, in array "budgetFix"
 			for (var i=0; i < data.feed.entry.length; i++) {
 
@@ -26,8 +24,6 @@ function getbudget(callback) {
 
 				budgetFix[i] = rowObj;
 			}
-
-			console.log(budgetFix);
 
 			// go through the list of posts, to add every primary category to an object as a key
 			for (var i=0; i < budgetFix.length; i++) {
@@ -51,7 +47,7 @@ function getbudget(callback) {
 // 1. go through the primary categories one by one
 // 2. go through the budget lines and create an array of all the secondary categories for that primary category, and their values
 // 3. iterate over the obj and add each category as a children object, with name, value and children array
-			
+
 
 			// goes through the primary array
 			// for each line.. (primary object)
@@ -107,6 +103,14 @@ function getbudget(callback) {
 							});
 						}
 					}
+
+					if (current.children.length == 0) {
+						delete current.children;
+					}
+				}
+
+				if (primary.children.length == 0) {
+					delete primary.children;
 				}
 			};
 		console.log("this is the final tree, an object named tree");
