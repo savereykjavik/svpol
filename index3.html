@@ -110,6 +110,8 @@
 			var fulldiff = -17100000;
 			var oldfullvalue = fullvalue + fulldiff;
 
+			var displayTreshold = 1000000;
+
 			// gör en linear scale för färg, som tar ut minsta och största diff
 			var o = d3.scale.linear()
 				.domain([
@@ -179,7 +181,7 @@
 
 				bound.select('.text')
 					.html(function(d) {
-						if (d.value > 1000000) {
+						if (d.value > displayTreshold) {
 							return textfun(d);
 						} else {
 							return '';
@@ -208,8 +210,9 @@
 							.classed('text', true)
 							// and we append some text
 							.html(function(d) {
-								if (d.value > 1000000) {
-									return "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>";
+								if (d.value > displayTreshold) {
+									return "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
+									       "<p class='line3'>" + nameish(d) + "</p>";
 								}
 							});
 
