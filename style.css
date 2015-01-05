@@ -1,0 +1,80 @@
+
+body {
+  font-family: "Exo 2", "Helvetica Neue", Helvetica, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 980px;
+  height:100%;
+}
+
+p {
+
+  margin: 0px;
+  font-weight: 200;
+
+}
+.text {
+	padding-top: 9px;
+	padding-left: 9px;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-align: left;
+	word-wrap: break-word;
+	display: table-cell;
+}
+p.line1 {
+	font-size: 30px;
+	line-height: 28px;
+	margin-bottom: 2px;
+	font-weight: 150;
+}
+
+p.line2 {
+	font-size: 9px;
+	margin-bottom: 5px;
+}
+
+p.mini {
+	font-size: 8px;
+	margin-bottom: 5px;
+	position: absolute; bottom: 0; left: 0;
+}
+
+p.line3 {
+	font-size: 11px;
+	margin-bottom: 5px;
+	font-weight: 250;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.details {
+	position: relative;
+	float: left;
+}
+
+h1 {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 2em;
+  padding-top: 15px;
+  text-align: left;
+  padding-left: 20px;
+}
+
+
+.node {
+  border: solid 1px white;
+  font-family: "Exo 2", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 11px;
+  color: white;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  border: 0px;
+
+}
+
+.node .content {
+	padding: 0px;
+
+}
