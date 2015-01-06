@@ -28,28 +28,30 @@
 	function init() {
 		var margin = {top: 10, right: 10, bottom: 10, left: 10},
 			width = 700 - margin.left - margin.right,
-			height = 400 - margin.top - margin.bottom;
+			height = 400 - margin.top - margin.bottom,
+			formatNumber = d3.format(",d"),
+    		transitioning;
 
 		var height2 = 120;
 		var margin2 = {top: 10, right: 10, bottom: 10, left: 10};
 
 		//Sätter en x-scale
 		var x = d3.scale.linear()
-			.domain([0, 1])
+			.domain([0, width])
 			.range([0, width]);
 
 		//sätter en y-scale
 		var y = d3.scale.linear()
-			.domain([0, 1])
+			.domain([0, height])
 			.range([0, height]);
 
 		// treemap är funktionen som genererar vårt data, tar root (vårt object).
 		var treemap = d3.layout.treemap()
 			.children(function(d, depth) { return depth ? null : d._children; })
-			.round(false)
 			.ratio(height / width * 0.5 * (1 + Math.sqrt(5)))
 			.value(function(d) { return d.size; })
-			.sort(function comparator(a, b) { return a.value - b.value; });
+			.sort(function comparator(a, b) { return a.value - b.value; })
+			.round(false);
 
 		// färg - linear scale för skillnad i procent diff
 		var u = d3.scale.linear()
@@ -63,15 +65,33 @@
 			])
 			.range(colorbrewerMod.Reporter[6]);
 
-		// var div lägger till en div till vår main div, som vi sedan kan rita i
-		var div = d3.select("#main").append("div")
-			.attr("id", "chart")
-			.style("position", "relative")
-			.style("width", (width + margin.left + margin.right) + "px")
-			.style("height", (height + margin.top + margin.bottom) + "px")
-			.style("margin-left", margin.left + "px")
-			.style("margin-top", margin.top + "px");
+		// var svg lägger till en svg till vår main div
+		var svg = d3.select("#main").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.bottom + margin.top)
+			.style("margin-left", -margin.left + "px")
+			.style("margin.right", -margin.right + "px")
+		.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+		// grandparent - Appendar en g på svg med class grandparent
+		var grandparent = svg.append("g")
+			.attr("class", "grandparent");
+
+		// lägger in en rectangle på grandparent g
+		grandparent.append("rect")
+			.attr("y", -margin.top)
+			.attr("width", width)
+			.attr("height", margin.top);
+
+				// lägger in text i grandparent
+		grandparent.append("text")
+		    .attr("x", 6)
+		    .attr("y", 6 - margin.top)
+		    .attr("dy", ".4em")
+		    .attr("fill", "white");
+
+		// ##### div för våra smålådor ##########
 		var div2 = d3.select("#details").append("div")
 			.attr("id", "chart2")
 			.style("position", "relative")
@@ -86,10 +106,19 @@
 
 		// ritar vår grejj
 		function drawtree(root) {
+			initialize(root);
 			copyChildren(root);
 			layout(root);
 			setup(root);
 
+		}
+
+		  // lägger till x, y, dx, dy och depth till root objectet
+		function initialize(root) {
+			root.x = root.y = 0;
+			root.dx = width;
+			root.dy = height;
+			root.depth = 0;
 		}
 
 		function copyChildren(d) {
@@ -113,11 +142,12 @@
 		        layout(c);
 		      });
 		    }
-		  }
+		}
 
 
 
 		function setup(root) {
+			display(root);
 			window.data = root;
 			console.log("console.log av root i setup!");
 			console.log(root);
@@ -168,7 +198,7 @@
 			}
 
 			function nameish(d) {
-				if (d.value < 2100000) {
+				if (d.value < 21000000) {
 					return (d.name.split(/\s+/).slice(0,1).join(" ").replace(/,\s*$/, "") + "...");
 				} else {
 					return d.name;
@@ -187,91 +217,118 @@
 				return d.diff*1 > 0 ? "+" : "";
 			}
 
-			function display(rootNode) {
-				var data = treemap.nodes(rootNode);
-				console.log(data);
+			function display(d) {
 
-				// bound modell. bound binder data till alla classed node
-				var bound = d3.select('#chart')
-					.selectAll(".node")
-					.data(data.filter(function(d) { return d.depth; }));
+				grandparent
+			        .datum(d.parent)
+			        .on("click", transition)
+			      .select("text")
+			        .text("Ett steg tillbaka");
 
-				bound.select('.text')
-					.html(function(d) {
-						if (d.value > displayTreshold) {
-							return textfun(d);
-						} else {
-							return '';
-						}
-					});
+			    //sätter in g före grandparent
+			    var g1 = svg.insert("g", ".grandparent")
+			        // d är datat som depth ska bindas till
+			        .datum(d)
+			        .attr("class", "depth");
 
-				// update - sker efter enter.append - sker alltså även vid uppdatering
-				bound.select('.content')
-					.style("background", colorfun);
+			    var g = g1.selectAll("g")
+			        .data(d._children)
+			        .enter().append("g");
 
-				// new - enter the data
-				bound.enter()
-					.append('div')
-					.classed("node", true)
-						//now we append divs to the divs
-						.append('div')
-						.classed("content", true)
-						.style("margin", "0px")
-						.style("background", "#b3e2cd")
-						.style("border-radius", function(d) {
-							return d.value > 12000000
+			    // i append, sker på append-delen
+			    // de children som har children, ska vara klickbara + class "children"
+			    g.filter(function(d) { return d._children; })
+			        .classed("children", true)
+			        .on("click", transition);
+
+			    g.filter(function(d) { return !d._children; })
+			        .classed("leaf", true);
+
+			    // skapar rektanglar för alla children till children (samma children som ovan). 
+			    // Om inga barn, binder datan för sig själv
+			    g.selectAll(".child")
+			        .data(function(d) { return d._children || [d]; })
+			      .enter().append("rect")
+			        .attr("class", "child")
+			        .call(rect);
+
+			    // sist appendas parent rect (borde heta "node (parent)"/Rouz, med en title (som syns om man hovrar)
+			    g.append("rect")
+			        .attr("class", "parent")
+			        .call(rect)
+			      .append("title")
+			        .text(function(d) { return formatNumber(d.value); });
+
+			    // appendar texten
+			    g.append("text")
+			        .text(function(d) { return (Math.round(d.value * 0.000001)) + " Miljarder - " + nameish(d); })
+			        .attr("dx", 6)
+			        .attr("dy", 6)
+			        .attr("font-size", "10px")
+		    		.attr("fill", "white")
+			        .call(text);
+
+
+			    function transition(d) {
+			      if (transitioning || !d) return;
+			      transitioning = true;
+			      // g1 är nuvarande vy, g2 är den vy som genereras av
+			      var g2 = display(d),
+			          t1 = g1.transition().duration(750),
+			          t2 = g2.transition().duration(750);
+
+			      // Update the domain only after entering new elements.
+			      x.domain([d.x, d.x + d.dx]);
+			      y.domain([d.y, d.y + d.dy]);
+
+			      // Enable anti-aliasing during the transition.
+			      svg.style("shape-rendering", null);
+
+			      // Draw child nodes on top of parent nodes.
+			      svg.selectAll(".depth").sort(function(a, b) { return a.depth - b.depth; });
+
+			      // Fade-in entering text.
+			      g2.selectAll("text").style("fill-opacity", 0);
+
+			      // Transition to the new view.
+			      t1.selectAll("text").call(text).style("fill-opacity", 0);
+			      t2.selectAll("text").call(text).style("fill-opacity", 1);
+			      t1.selectAll("rect").call(rect);
+			      t2.selectAll("rect").call(rect);
+
+			      // Remove the old node when the transition is finished.
+			      t1.remove().each("end", function() {
+			        transitioning = false;
+			      });
+			    }
+			    return g;
+  			}
+
+  			function text(text) {
+			    text.attr("x", function(d) { return x(d.x) + 6; })
+			        .attr("y", function(d) { return y(d.y) + 6; });
+			  }
+
+			  function rect(rect) {
+			    rect.attr("x", function(d) { return x(d.x); })
+			        .attr("y", function(d) { return y(d.y); })
+			        .attr("rx", function(d) { return d.value > 12000000
 								? "4px"
-								: "2px";
-						})
-							.append('div')
-							.classed('text', true)
-							// and we append some text
-							.html(function(d) {
-								if (d.value > displayTreshold) {
-									return "<p class='line1'>" + (Math.round(d.value * 0.000001)) + "</p>" +
-									       "<p class='line3'>" + nameish(d) + "</p>";
-								}
-							});
+								: "0px";
+					})
+			        .attr("ry", function(d) { return d.value > 12000000
+								? "4px"
+								: "0px";
+			        })
+			        .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
+			        .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); });
+			  }
 
-				// position the divs
-				bound
-					.classed("children", false)
-					.on("click", null)
-					.style("left", function(d) { return x(d.x) + "px"; })
-					.style("top", function(d) { return y(d.y) + "px"; })
-					.style("width", function(d) { return Math.max(0, x(d.dx)) + "px"; })
-					.style("height", function(d) { return Math.max(0, y(d.dy)) + "px"; });
-				bound.select('.content')
-					.style("width", function (d) { return (x(d.dx) - 1) + "px"; })
-					.style("height", function (d) { return (y(d.dy) - 1) + "px"; });
-
-				bound.filter(function(d) { return d._children; })
-					.classed("children", true)
-					.on("click", zoom);
-
-				bound.exit().remove();
-			}
-
-			// ################################################################
-
-			var zoomNode = root;
-
-			function zoom(d) {
-				zoomNode = d;
-				display(zoomNode);
-			}
-
-			// on click of color button ropar på display, och färgerna sätts om
-			jQuery("#colorbutton").click(function() {
-				percentColor = !percentColor;
-				display(zoomNode);
-			});
-
-
-			display(zoomNode);
-
-			// ################################################################
-
+			  function name(d) {
+			    return d.parent
+			        ? name(d.parent) + "." + d.name
+			        : d.name;
+			  }
 
 			// Rita ut alla småboxar
 			// New - enter the data

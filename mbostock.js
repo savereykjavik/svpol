@@ -102,36 +102,45 @@ d3.json("http://codepen.io/boars/pen/7958d57f25d20fae4e606732adbccf73.js", funct
   }
 
   function display(d) {
+
     grandparent
         .datum(d.parent)
         .on("click", transition)
       .select("text")
         .text(name(d));
 
+    //sätter in g före grandparent
     var g1 = svg.insert("g", ".grandparent")
+        // d är datat som depth ska bindas till
         .datum(d)
         .attr("class", "depth");
 
     var g = g1.selectAll("g")
         .data(d._children)
-      .enter().append("g");
+        .enter().append("g");
 
+    // i append, sker på append-delen
+    // de children som har children, ska vara klickbara + class "children"
     g.filter(function(d) { return d._children; })
         .classed("children", true)
         .on("click", transition);
 
+    // skapar rektanglar för alla children till children (samma children som ovan). 
+    // Om inga barn, binder datan för sig själv
     g.selectAll(".child")
         .data(function(d) { return d._children || [d]; })
       .enter().append("rect")
         .attr("class", "child")
         .call(rect);
 
+    // sist appendas parent rect (borde heta "node (parent)"/Rouz, med en title (som syns om man hovrar)
     g.append("rect")
         .attr("class", "parent")
         .call(rect)
       .append("title")
         .text(function(d) { return formatNumber(d.value); });
 
+    // appendar texten
     g.append("text")
         .attr("dy", ".75em")
         .text(function(d) { return d.name; })
@@ -140,7 +149,7 @@ d3.json("http://codepen.io/boars/pen/7958d57f25d20fae4e606732adbccf73.js", funct
     function transition(d) {
       if (transitioning || !d) return;
       transitioning = true;
-
+      // g1 är nuvarande vy, g2 är den vy som genereras av
       var g2 = display(d),
           t1 = g1.transition().duration(750),
           t2 = g2.transition().duration(750);

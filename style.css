@@ -13,6 +13,64 @@ p {
   font-weight: 200;
 
 }
+
+text {
+  pointer-events: none;
+}
+
+.grandparent text {
+  font-weight: 100;
+}
+
+rect {
+  fill: none;
+  stroke: #fff;
+}
+
+rect.parent,
+.grandparent rect {
+  stroke-width: 2px;
+}
+
+.grandparent rect {
+  fill: #b3e2cd;
+}
+
+.grandparent:hover rect {
+  fill-opacity: 0.7;
+}
+
+.children rect.parent,
+.grandparent rect {
+  cursor: pointer;
+}
+
+.children rect.parent {
+  fill: #b3e2cd;
+  fill-opacity: 0.7;
+}
+
+.children:hover rect.parent {
+  fill: #b3e2cd;
+  fill-opacity: 0;
+}
+
+.children rect.child {
+  fill: #b3e2cd;
+  fill-opacity: 1;
+}
+
+.leaf rect.child {
+  fill: #b3e2cd;
+  fill-opacity: 0.7;
+}
+
+.children:hover rect.child {
+  fill: #b3e2cd;
+  fill-opacity: 0.8;
+}
+
+
 .text {
 	padding-top: 9px;
 	padding-left: 9px;
