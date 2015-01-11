@@ -177,7 +177,8 @@
 
 			function diffish(d) {
 				if (d.diff*1 != 0) {
-					return ((Math.round(d.diff*1 * 0.001)) + " miljoner");
+					var x = (Math.round(d.diff*1 * 0.001));
+					return thousandspace(x) + " miljoner");
 				} else {
 					return "Oförändrad"
 				}
@@ -186,6 +187,13 @@
 			function addplus(d) {
 				return d.diff*1 > 0 ? "+" : "";
 			}
+
+			function thousandspace(x) {
+			    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+
+			var ju = thousandspace(75893759345430958);
+			console.log (ju);
 
 			function display(rootNode) {
 				var data = treemap.nodes(rootNode);

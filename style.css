@@ -16,57 +16,63 @@ p {
 
 text {
   pointer-events: none;
+  fill: white;
+}
+
+.name {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 .grandparent text {
   font-weight: 100;
+  font-size: 4em;
+  fill: #c9eadb;
 }
 
 rect {
-  fill: none;
-  stroke: #fff;
+  stroke: #ffffff;
 }
 
 rect.parent,
 .grandparent rect {
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
 
 .grandparent rect {
-  fill: #b3e2cd;
+  fill: #1b9a9a;
 }
 
 .grandparent:hover rect {
-  fill-opacity: 0.7;
+  fill-opacity: 0.9;
 }
 
+.grandparent:hover text {
+  fill: white;
+}
+
+
 .children rect.parent,
-.grandparent rect {
+.grandparent rect  {
   cursor: pointer;
 }
 
 .children rect.parent {
-  fill: #b3e2cd;
   fill-opacity: 0.7;
 }
 
 .children:hover rect.parent {
-  fill: #b3e2cd;
   fill-opacity: 0;
 }
 
 .children rect.child {
-  fill: #b3e2cd;
   fill-opacity: 1;
 }
 
 .leaf rect.child {
-  fill: #b3e2cd;
-  fill-opacity: 0.7;
+
 }
 
 .children:hover rect.child {
-  fill: #b3e2cd;
   fill-opacity: 0.8;
 }
 
@@ -80,34 +86,21 @@ rect.parent,
 	word-wrap: break-word;
 	display: table-cell;
 }
-p.line1 {
-	font-size: 20px;
-	line-height: 18px;
-	margin-bottom: 2px;
-	font-weight: 150;
-}
 
-p.line2 {
-	font-size: 9px;
-	margin-bottom: 5px;
-}
-
-p.mini {
-	font-size: 8px;
-	margin-bottom: 5px;
-	position: absolute; bottom: 0; left: 0;
-}
-
-p.line3 {
-	font-size: 11px;
-	margin-bottom: 5px;
-	font-weight: 250;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-}
-
-.details {
+#post {
 	position: relative;
 	float: left;
+  width: 655px;
+  text-align: justify;
+  font-size: 13px;
+  font-weight: 100;
+  font-style: normal;
+  font-family: "Myriad Set Pro","Lucida Grande","Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;
+  line-height: 1.5;
+  padding: 5px 0px 25px 5px;
+  color: #777;
+  margin-top: .5em;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
