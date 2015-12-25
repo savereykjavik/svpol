@@ -1,14 +1,19 @@
 body {
-  background-color: #FFF
+  margin: 0px;
+  background-color: #FFF;
+  text-align: center;
+  font-family: "Lato", sans serif;
 }
 
 h1 {
-  text-align: center;
-  font-family: "Lato", sans serif;
-  font-weight: 200;
   color: #333;
   font-style: uppercase;
   font-size: 3em;
+  font-weight: 200;
+}
+
+h3 {
+    font-weight: 200 !important;
 }
 
 
@@ -23,8 +28,22 @@ h1 {
 	max-width: 1200px;
 }
 
+#homeicon {
+  max-height: 40px;
+  opacity: 0.3;
+}
+
 #intro {
-  margin-top: 50px;
+  margin-top: 100px;
+}
+
+#footer {
+  background-color: #eee;
+  height: 200px;
+}
+
+.navbar {
+  background-color: #eee;
 }
 
 text {
