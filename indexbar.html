@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700,900,200" rel="stylesheet" type="text/css">
+</head>
+
 <style>
 
 body {
@@ -13,7 +17,7 @@ text {
 }
 
 rect.background {
-  fill: #ddd;
+  fill: #eee;
   opacity: 0.2;
 }
 
@@ -62,10 +66,10 @@ var x = d3.scale.linear()
 var barHeight = 20;
 
 var color = d3.scale.ordinal()
-    .range(["steelblue", "#ccc"]);
+    .range(["#0cb193", "#ccc"]);
 
-var duration = 750,
-    delay = 25;
+var duration = 500,
+    delay = 15;
 
 var partition = d3.layout.partition()
     .value(function(d) { return d.size; });
