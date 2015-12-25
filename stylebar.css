@@ -1,21 +1,33 @@
 body {
   margin: 0px;
   background-color: #FFF;
-  text-align: center;
+  color: #444;
   font-family: "Lato", sans serif;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
   font-style: uppercase;
   font-size: 3em;
   font-weight: 200;
 }
 
 h3 {
+    text-align: center;
+    line-height: 1.2em;
     font-weight: 200 !important;
 }
 
+.row div {
+  float: left;
+  margin-left: 10px;
+}
+
+.legenddiv {
+  margin-top: 50px !important;
+  width: 500px;
+  margin: 0 auto;
+}
 
 .container-fluid {
 	max-width: 1600px;
@@ -26,6 +38,9 @@ h3 {
 	position: relative;
 	width: 100%;
 	max-width: 1200px;
+}
+.navbar-default {
+  border: none !important;
 }
 
 #homeicon {
