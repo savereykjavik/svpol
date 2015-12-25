@@ -2,12 +2,19 @@
 <meta charset="utf-8">
 <style>
 
+body {
+  background-color: #FFF
+}
+
 text {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
+  font-family: "Helvetica Neue";
+  font-weight: 300;
 }
 
 rect.background {
-  fill: white;
+  fill: #ddd;
+  opacity: 0.2;
 }
 
 .axis {
@@ -15,14 +22,15 @@ rect.background {
 }
 
 .axis path,
-.axis line {
+.x line {
   fill: none;
   stroke: #ddd;
 }
 
 
 /*for tooltip*/
-div.tooltip {   
+div.tooltip {
+  opacity: 0;
   position: absolute;                
   max-width: 200px;                                  
   padding: 10px 20px 10px 20px;            
@@ -247,8 +255,8 @@ function bar(d) {
           .style("opacity", 1);      
         div
           .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em;'>" + formatNumber(d.value) + " kr </b>")
-          .style("left", (d3.event.pageX) + "px")     
-          .style("top", (d3.event.pageY - 28) + "px");    
+          .style("left", (d3.event.pageX + 20) + "px")     
+          .style("top", (d3.event.pageY - 80) + "px");    
       })                  
       .on("mouseout", function(d) {       
         div.transition()        
