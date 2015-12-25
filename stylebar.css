@@ -55,12 +55,12 @@ rect.background {
   opacity: 0;
   position: absolute;                
   max-width: 200px;                                  
-  padding: 12px 20px 10px 20px;            
+  padding: 10px 20px 10px 20px;            
   font: 14px sans-serif;
   font-family: "Helvetica Neue";
   font-weight: 300;  
   background: #fff;
-  border: 2px solid #eb763f; 
+  border: 1px solid #656565; 
   border-radius: 5px;           
   pointer-events: none;         
 }
