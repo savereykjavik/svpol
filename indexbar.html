@@ -13,7 +13,7 @@
 <body>
 
 <div class="container-fluid">
-  <div class="container">
+  <div class="container" id="intro">
     <h1>Sveriges budget</h1>
   </div>
 </div>
@@ -33,7 +33,7 @@
 
 var formatNumber = d3.format(",");
 
-var margin = {top: 120, right: 120, bottom: 120, left: 320},
+var margin = {top: 100, right: 120, bottom: 120, left: 320},
     width = 1200 - margin.left - margin.right,
     height = 900 - margin.top - margin.bottom;
 
@@ -43,7 +43,7 @@ var x = d3.scale.linear()
 var barHeight = 20;
 
 var color = d3.scale.ordinal()
-    .range(["#9d005d", "#ccc"]);
+    .range(["#00b3bc", "#ccc"]);
 
 var duration = 600,
     delay = 15;

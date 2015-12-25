@@ -5,9 +5,10 @@ body {
 h1 {
   text-align: center;
   font-family: "Lato", sans serif;
-  font-weight: 400;
+  font-weight: 200;
+  color: #333;
   font-style: uppercase;
-  font-size: 4em;
+  font-size: 3em;
 }
 
 
@@ -20,6 +21,10 @@ h1 {
 	position: relative;
 	width: 100%;
 	max-width: 1200px;
+}
+
+#intro {
+  margin-top: 50px;
 }
 
 text {
@@ -39,6 +44,7 @@ rect.background {
 }
 
 .axis path,
+
 .x line {
   fill: none;
   stroke: #ddd;
@@ -49,12 +55,12 @@ rect.background {
   opacity: 0;
   position: absolute;                
   max-width: 200px;                                  
-  padding: 10px 20px 10px 20px;            
+  padding: 12px 20px 10px 20px;            
   font: 14px sans-serif;
   font-family: "Helvetica Neue";
   font-weight: 300;  
   background: #fff;
-  border: 2px solid #525a5e; 
+  border: 2px solid #eb763f; 
   border-radius: 5px;           
   pointer-events: none;         
 }
