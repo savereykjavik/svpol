@@ -9,7 +9,7 @@
 	<div><h1>Budgeten 2015</h1></div>
 	<div id="post">
 	<p> Alliansens (det fastställda) budgeten för 2015 omfattar utgifter för 869,6 miljarder. Regeringens förslag omfattade 886,6 miljarder, dvs 17 miljarder mer. <br>
-	Skillnaden mellan Regeringens och Alliansens förslag motsvaras i stort sett av de skillnader i skatteinkomster som blocken föreslår. I regeringens förslag uppgår statens inkomster till 854,1 miljarder, i Alliansens till 837 miljarder kronor. Däremellan skiljer 17,1 miljarder i skatteintäkter. <br>
+	Skillnaden i storlek mellan Regeringens och Alliansens förslag motsvaras i stort sett av de skillnader i skatteinkomster som blocken föreslår. I regeringens förslag uppgår statens inkomster till 854,1 miljarder, i Alliansens till 837 miljarder kronor. Däremellan skiljer 17,1 miljarder i skatteintäkter. <br>
 	Värt att nämna är även att båda blockens förslag lämnar ett underskott på 32,5 respektive 32,6 miljarder. Detta underskott täcks upp av en ökad statsskuld. Räntan på nuvarande statsskuld utgör en budgetpost på 20 miljarder.
 	</p>
 	</div>
@@ -32,8 +32,8 @@
 
 	function init() {
 		var margin = {top: 0, right: 0, bottom: 0, left: 35},
-			width = 700 - margin.left - margin.right,
-			height = 400 - margin.top - margin.bottom,
+			width = 900 - margin.left - margin.right,
+			height = 600 - margin.top - margin.bottom,
 			formatNumber = d3.format(",d"),
     		transitioning;
 
@@ -176,11 +176,11 @@
 			function colorfun(doColor) {
 				return function(d) {
 					if (showColor && doColor) {
-						return d3.rgb(o(d.diff)).brighter(1.5);
+						return d3.rgb(o(d.diff)).brighter(1);
 					} else if (!doColor &&  showColor) {
-						return d3.rgb(o(d.parent.diff)).brighter(1.5);
+						return d3.rgb(o(d.parent.diff)).brighter(0);
 					} else if (!showColor) {
-						return  "#a8dbc3";
+						return  "#0cb193";
 					}
 				};
 			};
@@ -385,19 +385,19 @@
 				g.append("text")
 					.classed("name", true)
 			        .attr("font-size", function(d) {
-			        	return d.value > 13000000 ? "8px" : "6px";
+			        	return d.value > 20000000 ? "10px" : "8px";
 			        })
 			        .attr("font-weight", function(d) {
-			        	return d.value > 13000000 ? "300" : "200";
+			        	return d.value > 20000000 ? "300" : "100";
 			        });
 
 				g.append("text")
 					.classed("sum", true)
 			        .attr("font-size", function(d) {
-			        	return d.value > 13000000 ? "14px" : "12px";
+			        	return d.value > 20000000 ? "16px" : "12px";
 			        })
 			        .attr("font-weight", function(d) {
-			        	return d.value > 13000000 ? "200" : "100";
+			        	return d.value > 20000000 ? "300" : "200";
 			        });
 
 				g.selectAll('text')
