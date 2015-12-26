@@ -50,7 +50,7 @@
 <div class="container-fluid">
   <div class="container" id="intro">
     <h1>Sveriges budget</h1>
-    <h3>Här kan du klicka dig igenom den statliga budgeten</h3>
+    <h3>Här kan du navigera dig igenom den statliga budgeten</h3>
     <br>
 
     <div class="legenddiv">
@@ -63,7 +63,7 @@
         </div>
 
         <div>
-          Klicka för att se ytterligare budgetnivåer inom detta utgiftsområde
+          Klicka för att se nästa budgetnivåer inom detta utgiftsområde
         </div>
       </div>
 
@@ -117,8 +117,8 @@
 
 var formatNumber = d3.format(",");
 
-var margin = {top: 100, right: 120, bottom: 120, left: 320},
-    width = 1200 - margin.left - margin.right,
+var margin = {top: 100, right: 120, bottom: 120, left: 220},
+    width = 900 - margin.left - margin.right,
     height = 900 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
