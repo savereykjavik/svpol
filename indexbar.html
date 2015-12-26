@@ -128,8 +128,8 @@ var barHeight = 20;
 var color = d3.scale.ordinal()
     .range(["#00b3bc", "#ccc"]);
 
-var duration = 600,
-    delay = 15;
+var duration = 2000,
+    delay = 200;
 
 var partition = d3.layout.partition()
     .value(function(d) { return d.size; });
@@ -208,7 +208,8 @@ function down(d, i) {
 
   // Entering nodes immediately obscure the clicked-on bar, so hide it.
   exit.selectAll("rect").filter(function(p) { return p === d; })
-      .style("fill-opacity", 1e-6);
+      // .style("fill-opacity", 1e-6)
+      ;
 
   // Enter the new bars for the clicked-on data.
   // Per above, entering bars are immediately visible.
@@ -347,11 +348,11 @@ function bar(d) {
           .style("left", (d3.event.pageX + 20) + "px")     
           .style("top", (d3.event.pageY - 80) + "px");    
       })
-      .on("click", function(d) {       
+      .on("click", function(d) {
+        down(d);     
         div.transition()        
           .duration(400)      
           .style("opacity", 0);
-        down(d);
         $("html, body").animate({scrollTop:$('#chart').position().top}, "slow");
       })                
       .on("mouseout", function(d) {       
