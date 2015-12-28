@@ -8,6 +8,8 @@ body {
 }
 
 h1 {
+/*  color: #FFD333 !important;  */
+  color: #E2E2E2 !important;
   text-align: center;
   font-style: uppercase;
   font-size: 5em !important;
@@ -15,6 +17,8 @@ h1 {
 }
 
 h3 {
+/*  color: #FFD333 !important;  */
+  color: #E2E2E2 !important;
     text-align: center;
     line-height: 1.4em;
     font-weight: 600 !important;
@@ -68,7 +72,7 @@ g.child {
 }
 
 .legenddiv {
-  background: white;
+    border: 1px solid gray;
   border-radius: 15px;
   padding: 20px 5px 11px 28px;
   width: 569px;
@@ -102,7 +106,7 @@ g.child {
 
 #intro {
   color: white;
-  background: linear-gradient(110deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55) ),url('bruh.jpg');
+  background: linear-gradient(110deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.50) ),url('bruh.jpg');
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -111,11 +115,15 @@ g.child {
   min-height: 500px;
 }
 
+#legendcontainer {
+      background-color: #f8f8f8;
+}
+
 .middle-text {
   -webkit-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   position: absolute;
-  top: 50%;
+  top: 56%;
   left: 50%;
 }
 
