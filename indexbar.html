@@ -295,7 +295,7 @@ function down(d, i) {
   svg.selectAll(".gobackpost")
       .datum(d)
       .text(function(d){
-        return ( (d.name == "flare" ? "Sveriges riksbudget" : d.name) + ", " + 
+        return ( (d.name == "flare" ? "Sveriges totala statsbudget" : d.name) + ", " + 
           d3.format(".3s")(d.value * 1000)
             .replace(/G|M|K/gi, function(matched){ 
               return seFullFormat[matched];
