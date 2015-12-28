@@ -1,8 +1,9 @@
 body {
+  -webkit-font-smoothing: antialiased;
   margin: 0px;
   background-color: #FFF;
   color: #444;
-  font-family: "Lato", sans serif;
+  font-family: "Lato", sans serif !important;
 }
 
 h1 {
@@ -18,13 +19,54 @@ h3 {
     font-weight: 200 !important;
 }
 
+p {
+  color: #333;
+}
+
+.till
+
+g.child {
+    transform: translateY(25px);
+}
+
+ .gobackpost  {
+  font-weight: light;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Lato", sans serif !important;
+  color: #666;
+}
+
+ .tillbaka  {
+    font-weight: 400;
+    font-size: 14px;
+    transition: font-size 0.05s ease-in;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Lato", sans serif !important;
+    color: #00b3bc;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .tillbaka:hover {
+    opacity: 0.9;
+    font-size: 105%;
+  }
+
+
+
+.bar:hover {
+  opacity: 0.6;
+}
+
 .row div {
   float: left;
   margin-left: 10px;
 }
 
 .legenddiv {
-  margin-top: 50px !important;
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
   width: 500px;
   margin: 0 auto;
 }
@@ -64,6 +106,7 @@ h3 {
 #footer {
   background-color: #eee;
   height: 200px;
+  min-width: 1200px;
 }
 
 .navbar {
@@ -74,7 +117,7 @@ text {
   font: 11px sans-serif;
   font-family: "Lato", sans serif;
   font-weight: 400;
-  fill: #444444;
+  fill: #333;
 }
 
 rect.background {
@@ -90,9 +133,8 @@ rect.background {
 
 .x line {
   fill: none;
-  stroke: #ddd;
+  stroke: #eee;
 }
-
 
 .tooltip {
   opacity: 0;
@@ -103,7 +145,7 @@ rect.background {
   font-family: "Helvetica Neue";
   font-weight: 300;  
   background: #fff;
-  border: 1px solid #656565; 
+  border: 1px solid #666; 
   border-radius: 5px;           
   pointer-events: none;         
 }
