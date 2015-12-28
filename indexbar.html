@@ -191,20 +191,10 @@ svg.append("text")
       .attr("x", 0)
       .attr("y", -58);
 
-// lägger in rect
-// svg.append("rect")
-//   .classed("goback", true)
-//     .on("click", up)
-//       .attr("width", 50)
-//       .attr("height", 20)
-//       .attr("x", 0)
-//       .attr("y", 5)
-//       .attr("fill", "#00b3bc");
-
 // lägger in text
 svg.append("text")
   .classed("goback tillbaka", true)
-    .html("&laquo;" + " Tillbaka")
+    .text("&laquo;" + " Tillbaka")
     .on("click", up)
       .attr("x", 5)
       .attr("y", -33)
