@@ -117,7 +117,7 @@ var formatNumber = d3.format(",");
 var getHeight = 875
 var svgWidth = 900
 
-var margin = {top: 100, right: 0, bottom: 120, left: 220},
+var margin = {top: 60, right: 0, bottom: 120, left: 220},
     width = svgWidth - margin.left - margin.right,
     height = getHeight - margin.top - margin.bottom;
 
@@ -191,12 +191,12 @@ svg.append("g")
     .attr("y1", "100%");
 
 // lägger in text
-svg.append("text")
-  .classed("gobackpost goback", true)
-    .on("click", up)
-      .attr("text-anchor", "middle")
-      .attr("x", svgWidth/2-220)
-      .attr("y", -58);
+// svg.append("text")
+//   .classed("gobackpost goback", true)
+//     .on("click", up)
+//       .attr("text-anchor", "middle")
+//       .attr("x", svgWidth/2-220)
+//       .attr("y", -58);
 
 // lägger in rect
 // svg.append("rect")
@@ -303,7 +303,7 @@ function down(d, i) {
   svg.selectAll(".gobackpost")
       .datum(d)
       .text(function(d){
-        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ", " + 
+        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ": " + 
           d3.format(".3s")(d.value * 1000)
             .replace(/G|M|K/gi, function(matched){ 
               return seFullFormat[matched];
@@ -388,7 +388,7 @@ function up(d) {
   svg.selectAll(".gobackpost")
       .datum(d.parent)
       .text(function(d){
-        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ", " + 
+        return ( (d.name == "flare" ? "Sveriges statsbudget" : d.name) + ": " + 
           d3.format(".3s")(d.value * 1000)
             .replace(/G|M|K/gi, function(matched){ 
               return seFullFormat[matched];
