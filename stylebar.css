@@ -3,20 +3,21 @@ body {
   margin: 0px;
   background-color: #FFF;
   color: #444;
-  font-family: "Lato", sans serif !important;
+  font-family: "Lato", sans serif !important
+  font-size: 12px !important;
 }
 
 h1 {
   text-align: center;
   font-style: uppercase;
-  font-size: 3em;
-  font-weight: 200;
+  font-size: 5em !important;
+  font-weight: 800 !important;
 }
 
 h3 {
     text-align: center;
-    line-height: 1.2em;
-    font-weight: 200 !important;
+    line-height: 1.4em;
+    font-weight: 600 !important;
 }
 
 p {
@@ -29,6 +30,10 @@ g.child {
     transform: translateY(25px);
 }
 
+.dontShow {
+  display: none;
+}
+
  .gobackpost  {
   font-weight: light;
   font-size: 18px;
@@ -38,19 +43,17 @@ g.child {
 }
 
  .tillbaka  {
-    font-weight: 400;
+    font-weight: bold;
     font-size: 14px;
     transition: font-size 0.05s ease-in;
     -webkit-font-smoothing: antialiased;
     font-family: "Lato", sans serif !important;
-    color: #00b3bc;
     opacity: 0;
     cursor: pointer;
   }
 
   .tillbaka:hover {
-    opacity: 0.9;
-    font-size: 105%;
+    opacity: 0.7 !important;
   }
 
 
@@ -65,9 +68,12 @@ g.child {
 }
 
 .legenddiv {
-    margin-top: 25px !important;
-    margin-bottom: 25px !important;
-  width: 500px;
+  background: white;
+  border-radius: 15px;
+  padding: 20px 5px 11px 28px;
+  width: 569px;
+  margin-top: 25px !important;
+  margin-bottom: 25px !important;
   margin: 0 auto;
 }
 
@@ -95,7 +101,22 @@ g.child {
 }
 
 #intro {
-  margin-top: 100px;
+  color: white;
+  background: linear-gradient(110deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55) ),url('bruh.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#intro .container {
+  min-height: 500px;
+}
+
+.middle-text {
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 #chart svg {

@@ -47,12 +47,19 @@
 <!-- end navigation panel -->
 
 <!-- intro -->
-<div class="container-fluid">
-  <div class="container" id="intro">
-    <h1>Sveriges budget</h1>
-    <h3>Här kan du navigera dig genom den statliga budgeten</h3>
-    <br>
+<div class="container-fluid" id="intro">
+  <div class="container" >
+    <div class="middle-text">
+      <h1>Sveriges budget</h1>
+      <h3>Här kan du navigera dig genom den statliga budgeten</h3>
+      <br>
+    </div>
+  </div>
+</div>
+<!-- end intro -->
 
+<div class="container-fluid">
+  <div class="container" >
     <div class="legenddiv">
 
       <div class="row">
@@ -78,12 +85,10 @@
           <p>Budgetposten innehåller inga fler budgetnivåer</p>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- end intro -->
 <div id="backbutton">
 </div>
 
@@ -191,14 +196,26 @@ svg.append("text")
       .attr("x", 0)
       .attr("y", -58);
 
+// lägger in rect
+// svg.append("rect")
+//   .classed("goback", true)
+//     .on("click", up)
+//       .attr("x", 0)
+//       .attr("y", 5)
+//       .attr("width", "100")
+//       .attr("height", "20")
+//       .style("fill", "#FFF")
+//       ;
+
 // lägger in text
 svg.append("text")
   .classed("goback tillbaka", true)
-    .text("&laquo;" + " Tillbaka")
+    .text('⬅' + " Tillbaka")
     .on("click", up)
-      .attr("x", 5)
-      .attr("y", -33)
-      .style("fill", "rgb(1, 142, 156)");
+      .attr("x", 10)
+      .attr("y", 20)
+      .style("fill", "#333");
+      // .style("fill", "rgb(1, 142, 156)");
 
 d3.json("budget.json", function(error, root) {
   if (error) throw error;
@@ -264,8 +281,8 @@ function down(d, i) {
       .remove();
 
   // Transition exiting bars to the new x-scale.
-  exitTransition.selectAll("rect")
-      .attr("width", function(d) { return x(d.value); });
+  // exitTransition.selectAll("rect")
+  //     .attr("width", function(d) { return x(d.value); });
 
   // Rebind the current node to the background.
   svg.select(".background")
@@ -273,7 +290,6 @@ function down(d, i) {
     .transition()
       .duration(end);
 
-  console.log('backg');
 
   // Rebind the current node to the background.
   svg.selectAll(".goback")
@@ -396,7 +412,10 @@ function bar(d) {
 
   d3.selectAll(".tillbaka")
     .style("opacity", function() {
-      return d.depth == 0 ? 0 : 1;
+      return d.depth == 0 ? 0: 1;
+    })
+    .classed("dontShow", function() {
+      return d.depth == 0 ? true : false;
     })
   ;
 
