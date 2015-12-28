@@ -9,7 +9,7 @@ body {
 
 h1 {
 /*  color: #FFD333 !important;  */
-  color: #E2E2E2 !important;
+  color: #F2F2F2 !important;
   text-align: center;
   font-style: uppercase;
   font-size: 5em !important;
@@ -18,7 +18,7 @@ h1 {
 
 h3 {
 /*  color: #FFD333 !important;  */
-  color: #E2E2E2 !important;
+  color: #F2F2F2 !important;
     text-align: center;
     line-height: 1.4em;
     font-weight: 600 !important;
@@ -39,8 +39,9 @@ g.child {
 }
 
  .gobackpost  {
+  margin-top: 200px;
   font-weight: light;
-  font-size: 18px;
+  font-size: 1.5em;
   -webkit-font-smoothing: antialiased;
   font-family: "Lato", sans serif !important;
   color: #666;
@@ -72,7 +73,7 @@ g.child {
 }
 
 .legenddiv {
-    border: 1px solid gray;
+  border: 1px solid rgba(128, 128, 128, 0.7);
   border-radius: 15px;
   padding: 20px 5px 11px 28px;
   width: 569px;
@@ -130,6 +131,10 @@ g.child {
 #chart svg {
   display: block;
   margin: 0 auto;
+}
+
+#chart {
+  padding-top: 50px;
 }
 
 #footer {

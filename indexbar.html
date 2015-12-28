@@ -115,9 +115,10 @@ var chartPos = chartDiv.position();
 var formatNumber = d3.format(",");
 
 var getHeight = 875
+var svgWidth = 900
 
 var margin = {top: 100, right: 0, bottom: 120, left: 220},
-    width = 900 - margin.left - margin.right,
+    width = svgWidth - margin.left - margin.right,
     height = getHeight - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -193,7 +194,8 @@ svg.append("g")
 svg.append("text")
   .classed("gobackpost goback", true)
     .on("click", up)
-      .attr("x", 0)
+      .attr("text-anchor", "middle")
+      .attr("x", svgWidth/2-220)
       .attr("y", -58);
 
 // lägger in rect
