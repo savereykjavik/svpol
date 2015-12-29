@@ -20,6 +20,10 @@ body {
   font-family: "Lato", sans serif;
  }
 
+h1 {
+  font-size: 3em;
+}
+
 .container-fluid {
 	max-width: 1600px;
 }
@@ -32,6 +36,10 @@ body {
 .middle-text {
     position: relative;
     top: 50%;	
+}
+
+.width-text {
+  max-width: 700px;
 }
 
 .centered {
@@ -52,8 +60,16 @@ body {
 
 
 #intro {
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+#intro p {
+  font-family: "Source Sans pro", sans-serif;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #666;
 }
 
 /* D3 */
