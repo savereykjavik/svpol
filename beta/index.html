@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <!-- css -->
-  <link rel="stylesheet" type="text/css" href="stylebar.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-  <!-- fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700,900,200" rel="stylesheet" type="text/css">
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,900,300,700' rel='stylesheet' type='text/css'>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-
-</head>
+  </head>
 
 
 <body>
@@ -38,7 +32,7 @@
 
     <div class="collapse navbar-collapse" id="navbar-collapse-main">
     <ul class="nav navbar-nav">
-          <li><a href="#"><img id="homeicon" src="homedark.png"/></a></li>
+          <li><a href="#"><img id="homeicon" src="images/homedark.png"/></a></li>
       </ul>
     </div>
 
@@ -47,64 +41,25 @@
 <!-- end navigation panel -->
 
 <!-- intro -->
-<div class="container-fluid" id="intro">
-  <div class="container" >
-    <div class="middle-text">
+<div class="container-fluid" id="header">
+  <div class="container middle-text centered" >
       <h1>Sveriges budget</h1>
       <h3>Här kan du navigera dig genom statsbudgeten</h3>
       <br>
-    </div>
   </div>
 </div>
 
-<div class="container-fluid gray">
-  <div class="container">
-    <div class="middle-text">
-      <p>Lorem uhfwua nfg yfgl aieg bfajbv v,bjv, esv,egv ,esugvawjn cjkawbawlg fkjafbnv abv,ajhvb kjanv jk.abv aw vbawjk vajw vabvjkabf vbakj bvabvkjabvkawb h guf fgqu guq guq uf eoi owhowh goahoih orh uwrg ouwg ow</p>
-    </div>
+<div class="container-fluid gray" id="intro">
+  <div class="container middle-text centered">
+  	<p> blablablabl blabl abla blab labl bala bl </p>
   </div>
 </div>
 
-<!-- <div class="container-fluid gray">
-  <div class="container" >
-    <div class="legenddiv">
-
-      <div class="row">
-        <div>
-          <svg width="20" height="20">
-            <rect width="20" height="20" style="fill:#00b3bc;"/>
-          </svg>
-        </div>
-
-        <div>
-          <p>Budgetposten innehåller fler nivåer, klicka på stapeln eller texten för att se mer</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <svg width="20" height="20">
-            <rect width="20" height="20" style="fill:#ccc;"/>
-          </svg>
-        </div>
-
-        <div>
-          <p>Budgetposten innehåller inga fler budgetnivåer</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="container-fluid" id="outerchart">
+<div class="container-fluid" id="chartholder">
   <div class="container" id="chart">
   </div>
 </div>
 
-<div class="container-fluid" id="footer">
-  <div class="container">
-  </div>
-</div>
 
 
 
@@ -118,7 +73,7 @@ var chartPos = chartDiv.position();
 
 var formatNumber = d3.format(",");
 
-var getHeight = 875
+var getHeight = 900
 var svgWidth = 900
 
 var margin = {top: 60, right: 0, bottom: 120, left: 220},
@@ -131,7 +86,7 @@ var x = d3.scale.linear()
 var barHeight = 22;
 
 var color = d3.scale.ordinal()
-    .range(["#00b3bc", "#ccc"]);
+    .range(["#00b3bc", "rgb(179, 179, 179)"]);
 
 var duration = 600,
     delay = 10;
@@ -466,8 +421,8 @@ function bar(d) {
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { 
-        if (d.name.length > 40) {
-            return d.name.substring(0,39)+"...";
+        if (d.name.length > 37) {
+            return d.name.substring(0,36)+"...";
         } else {
           return d.name;
         }
@@ -494,3 +449,6 @@ function stack(i) {
 }
 
 </script>
+
+
+</body>

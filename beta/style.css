@@ -1,0 +1,120 @@
+/* navbar */
+
+#homeicon {
+	max-height: 40px;
+    opacity: 0.3;
+}
+
+#homeicon:hover {
+    opacity: 0.6;
+}
+
+.navbar-nav {
+	text-align: right;
+}
+
+/* general */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: "Lato", sans serif;
+ }
+
+.container-fluid {
+	max-width: 1600px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.middle-text {
+    position: relative;
+    top: 50%;	
+}
+
+.centered {
+	text-align: center;
+}
+
+.gray {
+	background-color: #f8f8f8;
+}
+
+/* ids */
+
+#header {
+	height: 400px;
+	color: white;
+	background: linear-gradient(110deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.50) ),url('images/bruh.jpg') center -455px no-repeat;
+}
+
+
+#intro {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+/* D3 */
+
+.background {
+  fill: #00B3BC;
+  opacity: 0.1;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.axis path,
+
+.enter text {
+	font-family: "Lato", sans serif;
+}
+
+.x line {
+  fill: none;
+  stroke: rgba(0, 179, 188, 0.13)
+}
+
+.tooltip {
+	opacity: 0;
+	position: absolute;                
+	max-width: 200px;                                  
+	padding: 12px 20px 12px 20px;            
+	font: 14px sans-serif;
+	font-family: "Helvetica Neue";
+	font-weight: 300;  
+	background: #fff;
+ 	border: 1px solid #999; 
+  border-radius: 7px;  
+	pointer-events: none;  
+}
+
+.bar:hover {
+  opacity: 0.6;
+}
+
+.tillbaka  {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tillbaka:hover {
+  opacity: 0.7 !important;
+}
+
+.dontShow {
+  display: none;
+}
+
+text {
+  font: 12px sans-serif;
+  font-weight: 400;
+  fill: #333;
+}
+
+.x text {
+  font-size: 13px;
+}

@@ -28,7 +28,18 @@ p {
   color: #333;
 }
 
-.till
+.view {
+  max-width: 800px !important;
+}
+
+
+.col-md-4 {
+  height: 40px;
+  text-align: center;
+  border: 1px solid rgba(128, 128, 128, 0.7);
+  border-radius: 10px;
+
+}
 
 g.child {
     transform: translateY(25px);
@@ -69,7 +80,6 @@ g.child {
 
 .row div {
   float: left;
-  margin-left: 10px;
 }
 
 .legenddiv {
@@ -107,20 +117,23 @@ g.child {
 
 #intro {
   color: white;
-  background: linear-gradient(110deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.50) ),url('bruh.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
+  background: linear-gradient(110deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.50) ),url('bruh.jpg') center -455px no-repeat;
+}
+
+.legenddiv svg {
+  margin-right: 10px;
 }
 
 #intro .container {
   min-height: 500px;
 }
 
-#legendcontainer {
-      background-color: #f8f8f8;
+.gray {
+  background-color: #f8f8f8;
 }
 
 .middle-text {
+  max-width: 900px;
   -webkit-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   position: absolute;
@@ -131,10 +144,9 @@ g.child {
 #chart svg {
   display: block;
   margin: 0 auto;
+
 }
 
-#chart {
-}
 
 #footer {
   background-color: #eee;
@@ -170,15 +182,16 @@ rect.background {
 }
 
 .tooltip {
+  box-shadow: 2px #888888;
   opacity: 0;
   position: absolute;                
   max-width: 200px;                                  
-  padding: 10px 20px 10px 20px;            
+  padding: 12px 20px 12px 20px;            
   font: 14px sans-serif;
   font-family: "Helvetica Neue";
   font-weight: 300;  
   background: #fff;
-  border: 1px solid #666; 
-  border-radius: 5px;           
+  border: 1px solid #999; 
+  border-radius: 7px;           
   pointer-events: none;         
 }
