@@ -51,15 +51,16 @@
 
 <div class="container-fluid gray" id="intro">
   <div class="container middle-text width-text">
-  	<p>Välkommen till en interaktiv graf över statsbudgeten. Du kan klicka på blå staplar för att följa hur summan är vidare fördelad inom området. Grå staplar har inga fler budgetnivåer. </p><p>Regeringens budgetproposition för 2016 lämnades till riksdagen den 21 september. Den 17 december avslutades riksdagsbehandlingen. För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/">Finansdepartementet</a>.</p>
+  	<p>Välkommen till en interaktiv graf över statsbudgeten. Du kan klicka på blå staplar för att följa hur summan är vidare fördelad inom området. Vita staplar har inga fler budgetnivåer. Håll pekaren över en text eller stapel för att se fullständig information. </p><p>Statens utgifter indelas i 27 områden som fördelas på de 11 departementen, de Kungliga Hovstaterna, bidrag till kommunerna samt avgifter till Europeiska unionen. För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/">Finansdepartementet</a>, eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget">Wikipedia</a>.</p>
   </div>
 </div>
 
+<div class="outer">
 <div class="container-fluid" id="chartholder">
   <div class="container" id="chart">
   </div>
 </div>
-
+</div>
 
 
 
@@ -73,12 +74,12 @@ var chartPos = chartDiv.position();
 
 var formatNumber = d3.format(",");
 
-var getHeight = 900
+var svgHeight = 700
 var svgWidth = 900
 
 var margin = {top: 60, right: 0, bottom: 120, left: 220},
     width = svgWidth - margin.left - margin.right,
-    height = getHeight - margin.top - margin.bottom;
+    height = svgHeight - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
     .range([0, width]);
@@ -86,7 +87,7 @@ var x = d3.scale.linear()
 var barHeight = 22;
 
 var color = d3.scale.ordinal()
-    .range(["#00b3bc", "rgb(179, 179, 179)"]);
+    .range(["#00b3bc", "rgb(255, 255, 255)"]);
 
 var duration = 600,
     delay = 10;
@@ -147,7 +148,9 @@ svg.append("g")
 svg.append("g")
     .attr("class", "y axis")
   .append("line")
-    .attr("y1", "100%");
+    .attr("y1", height)
+    .style("stroke", "#ddd")
+    .style("stroke-width", "1");
 
 // lägger in text
 // svg.append("text")
@@ -368,8 +371,12 @@ function up(d) {
 function bar(d) {
 
   var numberOfBars = d.children.length;
-  getHeight = numberOfBars * 24;
+  getHeight = numberOfBars * barHeight * 1.2 + (d.depth != 0 ? barHeight * 1.2 : 0) + 5;
+  if (getHeight < svgHeight) getHeight = svgHeight;
   console.log(getHeight);
+
+  d3.select("svg").attr("height", getHeight + margin.top + margin.bottom);
+  d3.select(".background").attr("height", getHeight);
 
   d3.selectAll(".tillbaka")
     .style("opacity", function() {
