@@ -72,14 +72,6 @@ h1 {
   color: #666;
 }
 
-.outer {
-    height: 300px;
-    overflow: auto;
-}
-#chartholder {
-    height:300px;
-}
-
 /* D3 */
 
 #chart {
@@ -90,7 +82,7 @@ h1 {
 
 .background {
   fill: #00B3BC;
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
 .axis {

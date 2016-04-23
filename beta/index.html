@@ -55,13 +55,11 @@
   </div>
 </div>
 
-<div class="outer">
+
 <div class="container-fluid" id="chartholder">
   <div class="container" id="chart">
   </div>
 </div>
-</div>
-
 
 
 <script src="//d3js.org/d3.v3.min.js"></script>
@@ -74,7 +72,7 @@ var chartPos = chartDiv.position();
 
 var formatNumber = d3.format(",");
 
-var svgHeight = 700
+var svgHeight = 660
 var svgWidth = 900
 
 var margin = {top: 60, right: 0, bottom: 120, left: 220},
@@ -84,10 +82,10 @@ var margin = {top: 60, right: 0, bottom: 120, left: 220},
 var x = d3.scale.linear()
     .range([0, width]);
 
-var barHeight = 22;
+var barHeight = 20;
 
 var color = d3.scale.ordinal()
-    .range(["#00b3bc", "rgb(255, 255, 255)"]);
+    .range(["#00b3bc", "rgb(113, 113, 113)"]);
 
 var duration = 600,
     delay = 10;
