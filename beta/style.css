@@ -1,8 +1,58 @@
+/* CSS reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+    margin:0;
+    padding:0;
+}
+html,body {
+    margin:0;
+    padding:0;
+}
+
+/*color schemes*/
+.teal {
+  background-color: #1fb2a0;
+  color: #fff;
+}
+
+.light-gray {
+  background-color: #f8f8f8;
+}
+
+.white {
+  background-color: #fff;
+}
+
+/* hero content*/
+
+.hero {
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+}
+
+.poster {
+  max-width: 250px;
+}
+
+.right {
+  text-align: right;
+  padding-right: 50px;
+}
+
+.text {
+  max-width: 460px;
+}
+
+.middle {
+    margin: 0 auto;
+    max-width: 810px;
+}
+
 /* navbar */
 
 #homeicon {
-	max-height: 40px;
-    opacity: 0.3;
+  max-height: 40px;
+  opacity: 0.3;
 }
 
 #homeicon:hover {
@@ -13,6 +63,10 @@
 	text-align: right;
 }
 
+.navbar {
+  margin-bottom: 0px;
+}
+
 /* general */
 
 body {
@@ -21,11 +75,28 @@ body {
  }
 
 h1 {
-  font-size: 3em;
+font-family: 'Abril Fatface', cursive;
+  font-size: 5em;
+  font-weight: 400;
+  line-height: 1.4em;
+  text-shadow: 0 1px #fff;
+}
+
+h2 {
+  font-family: 'Abril Fatface', cursive;
+  font-size: 1.8em;
+  font-weight: 400;
+  line-height: 1.8em;
+}
+
+h3 {
+  font-size: 1.8em;
+  line-height: 1.2em;
+  font-weight: 300;
 }
 
 .container-fluid {
-	max-width: 1600px;
+	width: 100%;
 }
 
 .container {
@@ -35,7 +106,8 @@ h1 {
 
 .middle-text {
     position: relative;
-    top: 50%;	
+    top: 50%;
+    transform: translateY(50%);
 }
 
 .width-text {
@@ -59,18 +131,15 @@ h1 {
 }
 
 
-#intro {
-	padding-top: 30px;
-	padding-bottom: 30px;
+.intro {
+  font-size: 15px;
+  font-weight: 300;
+  color: #5B5B5B;
+  text-shadow: 0px 1px lightgrey;
+  padding-top: 40px;
+  padding-bottom: 44px;
 }
 
-#intro p {
-  font-family: "Source Sans pro", sans-serif;
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: 400;
-  color: #666;
-}
 
 /* D3 */
 
@@ -81,8 +150,8 @@ h1 {
 }
 
 .background {
-  fill: #00B3BC;
-  opacity: 0.2;
+  fill: #f8f8f8;
+  opacity: 0.5;
 }
 
 .axis {
@@ -132,11 +201,12 @@ h1 {
 }
 
 text {
-  font: 12px sans-serif;
+  font-size: 12px;
   font-weight: 400;
-  fill: #333;
+  fill: #5B5B5B;
 }
 
 .x text {
-  font-size: 13px;
+font-size: 13px;
+    font-family: 'Abril Fatface', cursive;
 }

@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
 
   <!-- css -->
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -18,7 +19,7 @@
 <body>
 
 <!-- navigation panel -->
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
   <div class="container">
   
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -41,23 +42,50 @@
 </nav>
 <!-- end navigation panel -->
 
-<!-- intro -->
-<div class="container-fluid" id="header">
-  <div class="container middle-text centered" >
+<div class="container-fluid teal hero">
+
+  <div class="container">
+    <div class="col-md-8 right middle-text">
+      </br>
       <h1>Sveriges budget</h1>
-      <h3>Här kan du navigera dig genom statsbudgeten</h3>
-      <br>
+      <h3>Navigera dig genom statsbudgeten</h3>
+          </br>
+    </div>
+    <div class="col-md-4">
+      <img class="poster" src="images/finansminister3.png"></img>
+    </div>
+
   </div>
+
 </div>
 
-<div class="container-fluid gray" id="intro">
-  <div class="container middle-text width-text">
-  	<p>Välkommen till en interaktiv graf över statsbudgeten. Du kan klicka på blå staplar för att följa hur summan är vidare fördelad inom området. Vita staplar har inga fler budgetnivåer. Håll pekaren över en text eller stapel för att se fullständig information. </p><p>Statens utgifter indelas i 27 områden som fördelas på de 11 departementen, de Kungliga Hovstaterna, bidrag till kommunerna samt avgifter till Europeiska unionen. För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/">Finansdepartementet</a>, eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget">Wikipedia</a>.</p>
+
+
+
+<div class="container-fluid light-gray intro">
+
+  <div class="container">
+
+    <div class="col-md-6">
+      <div class="text">
+        <h2>892 miljarder kronor 2015</h2>
+        <p>Statens utgifter indelas i 27 områden som fördelas på de elva departementen samt de Kungliga Hovstaterna, bidrag till kommunerna samt avgifter till Europeiska unionen. För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget">Wikipedia</a>.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="text">
+        <h2>Från excel till barcharts</h2>
+        <p>Välkommen till en interaktiv graf över statens budgeterade utgifter. Du kan klicka på staplar för att följa hur summan är vidare fördelad inom området. Grå staplar har inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
+      </div>
+    </div>
+
   </div>
+
 </div>
 
 
-<div class="container-fluid" id="chartholder">
+<div class="container-fluid light-gray" id="chartholder">
   <div class="container" id="chart">
   </div>
 </div>
@@ -86,7 +114,7 @@ var x = d3.scale.linear()
 var barHeight = 20;
 
 var color = d3.scale.ordinal()
-    .range(["#00b3bc", "rgb(113, 113, 113)"]);
+    .range(["#f28686", "rgb(113, 113, 113)"]);
 
 var duration = 600,
     delay = 10;
