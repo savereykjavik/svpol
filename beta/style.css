@@ -57,6 +57,10 @@ hr {
     max-width: 810px;
 }
 
+.col-md-6 {
+  margin-bottom: 25px;
+}
+
 /* navbar */
 
 #homeicon {
@@ -95,7 +99,7 @@ h2 {
   font-family: 'Abril Fatface', cursive;
   font-size: 1.8em;
   font-weight: 400;
-  line-height: 1.8em;
+  margin-bottom: 13px;
 }
 
 h3 {
@@ -146,7 +150,6 @@ h3 {
   color: #5B5B5B;
   text-shadow: 0px 1px lightgrey;
   padding-top: 50px;
-  padding-bottom: 25px;
 }
 
 
