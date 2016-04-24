@@ -2,6 +2,6 @@
 
 This repo contains a D3.js visualisation of the Swedish government budget 2015.
 
-savereykjavik.github.io/svpol
+savereykjavik.github.io/svpol/beta
 
 (in swedish)
