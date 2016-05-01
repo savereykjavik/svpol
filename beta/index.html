@@ -65,12 +65,12 @@
 
     <div class="col-md-6">
         <h2>892 miljarder kronor 2015</h2>
-        <p>Statens utgifter indelas i 27 områden som fördelas på de elva departementen samt de Kungliga Hovstaterna, bidrag till kommunerna samt avgifter till Europeiska unionen. För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget">Wikipedia</a>.</p>
+        <p>År 2015 uppgick statsbudgeten utgifter till 892 miljarder kronor. Statens utgifter är indelade i 27 utgiftsområden i budgeten, och under dessa finns ca 500 så kallade anslag för olika utgifter. Ett anslag är en summa pengar och kan gälla maxtaxa i barnomsorgen eller underhåll av vägar. </br>För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
     </div>
 
     <div class="col-md-6">
-        <h2>Från excel till barcharts</h2>
-        <p>Välkommen till en interaktiv graf över statens budgeterade utgifter. Du kan klicka på staplar för att följa hur summan är vidare fördelad inom området. Grå staplar har inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
+        <h2>Öppen data men inte så lättläst</h2>
+        <p>Statsbudgeten är självklart offentlig information, men man kan nog inte påstå att den är särskilt lätttillgänglig i form av tabeller under regeringens hemsida och i olika dokument. Jag ville visualisera budgeten på ett lite mer överskådligt sätt. Du kan klicka på staplar för att se anslagen under varje utgiftsområde. När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
     </div>
 
   </div>
@@ -84,7 +84,7 @@
 </div>
 
 
-<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 <script>
 
@@ -421,9 +421,9 @@ function bar(d) {
           .duration(400)
           .style("opacity", 1);
         div
-          .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em;'>" + displayNumber(d.value) + "</b>")
-          .style("left", (d3.event.pageX + 20) + "px")
-          .style("top", (d3.event.pageY - 80) + "px");
+          .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em; margin-top: 10px;'>" + displayNumber(d.value) + "</b>")
+          .style("left", (d3.event.pageX + -60) + "px")
+          .style("top", (d3.event.pageY - 120) + "px");
       })
       .on("click", function(d, i) {
         div.transition()

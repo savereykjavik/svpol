@@ -30,8 +30,8 @@ hr {
 /* hero content*/
 
 .hero {
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 .hero .col-md-4 {
@@ -188,6 +188,7 @@ h3 {
 	padding: 12px 20px 12px 20px;            
 	font: 14px sans-serif;
 	font-family: "Helvetica Neue";
+  color: #5b5b5b;
 	font-weight: 300;  
 	background: #fff;
  	border: 1px solid #ddd; 
