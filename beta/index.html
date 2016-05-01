@@ -64,13 +64,13 @@
   <div class="container">
 
     <div class="col-md-6">
-        <h2>892 miljarder kronor 2015</h2>
-        <p>År 2015 uppgick statsbudgeten utgifter till 892 miljarder kronor. Statens utgifter är indelade i 27 utgiftsområden i budgeten, och under dessa finns ca 500 så kallade anslag för olika utgifter. Ett anslag är en summa pengar och kan gälla maxtaxa i barnomsorgen eller underhåll av vägar. </br>För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
+        <h2>892 miljarder kronor</h2>
+        <p>År 2015 uppgick statsbudgeten utgifter till 892 miljarder kronor. Utgufterna är indelade i 27 utgiftsområden, och under dessa finns totalt ca 500 så kallade anslag för olika utgifter. Ett anslag är en summa pengar och kan gälla maxtaxa i barnomsorgen eller underhåll av vägar. </br>För mer information kring budgeten eller ett specifikt utgiftsområde, kan du gå till t.ex. <a href="http://www.regeringen.se/sveriges-regering/finansdepartementet/statens-budget/" target="blank">Finansdepartementet</a> eller <a href="https://sv.wikipedia.org/wiki/Sveriges_statsbudget" target="blank">Wikipedia</a>.</p>
     </div>
 
     <div class="col-md-6">
-        <h2>Öppen data men inte så lättläst</h2>
-        <p>Statsbudgeten är självklart offentlig information, men man kan nog inte påstå att den är särskilt lätttillgänglig i form av tabeller under regeringens hemsida och i olika dokument. Jag ville visualisera budgeten på ett lite mer överskådligt sätt. Du kan klicka på staplar för att se anslagen under varje utgiftsområde. När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
+        <h2>Öppen data...</h2>
+        <p>Är inte alltid så lättläst. Statsbudgeten är offentlig information, men inte särskilt lätttillgänglig i form av tabeller under regeringens hemsida och i olika dokument, så jag ville visualisera budgeten på ett överskådligt sätt. Du kan klicka på staplar för att se anslagen under varje utgiftsområde. När staplar är grå, har de inga fler budgetnivåer. Håll pekaren över en text eller stapel för mer information.</p>
     </div>
 
   </div>
@@ -94,11 +94,12 @@ var chartPos = chartDiv.position();
 
 var formatNumber = d3.format(",");
 
-var svgHeight = 660
-var svgWidth = 900
+var svgHeight = 2000
+var svgWidth = 1000
 
 var margin = {top: 60, right: 0, bottom: 120, left: 220},
-    width = svgWidth - margin.left - margin.right,
+    width = 0.7*svgWidth - margin.left - margin.right,
+    widthR = 0.3 * svgWidth,
     height = svgHeight - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -117,11 +118,12 @@ var partition = d3.layout.partition()
 
 var xAxis = d3.svg.axis()
     .scale(x)
+    .ticks(5)
     .tickFormat(function(n) { 
       return d3.format("s")(n * 1000)
       .replace(/G|M|K/gi, function(matched){ return seFormat[matched];});
      })
-    .innerTickSize(-height)
+    .innerTickSize(-svgHeight)
     .outerTickSize(0)
     .orient("top");
 
@@ -156,6 +158,14 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var divR = d3.select("#chart").append("div")
+    .attr("width", widthR)
+    .attr("class", "legendR")
+    .attr("height", 600 + margin.top + margin.bottom)
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var legend0 = d3.select(".legendR").append("div").attr("class", "legend0");
+
 svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -172,33 +182,14 @@ svg.append("g")
     .style("stroke", "#ddd")
     .style("stroke-width", "1");
 
-// lägger in text
-// svg.append("text")
-//   .classed("gobackpost goback", true)
-//     .on("click", up)
-//       .attr("text-anchor", "middle")
-//       .attr("x", svgWidth/2-220)
-//       .attr("y", -58);
-
-// lägger in rect
-// svg.append("rect")
-//   .classed("goback", true)
-//     .on("click", up)
-//       .attr("x", 0)
-//       .attr("y", 5)
-//       .attr("width", "100")
-//       .attr("height", "20")
-//       .style("fill", "#FFF")
-//       ;
 
 // lägger in text
 svg.append("text")
   .classed("goback tillbaka", true)
-    .text('⬅' + " Tillbaka")
+    .text('⬅' + " Tillbaka upp")
     .on("click", up)
-      .attr("x", 10)
-      .attr("y", 20)
-      .style("fill", "#333");
+      .attr("x", -100)
+      .attr("y", 20);
       // .style("fill", "rgb(1, 142, 156)");
 
 d3.json("budget.json", function(error, root) {
@@ -390,12 +381,34 @@ function up(d) {
 // Creates a set of bars for the given data node, at the specified index.
 function bar(d) {
 
+  console.log(d);
+
+
+    divR.html(
+      function() {
+        if (d.depth == 0) {
+          return  "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>";
+        } else if 
+        (d.depth == 1) {
+          return  "<p class='legendName half'>" + d.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.value) + "</p></br>" +
+                  "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>";
+        } 
+        else if (d.depth == 2) {
+            return (
+              "<p class='legendName half'>" + d.parent.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.parent.value) + "</p></br>" +
+              "<p class='legendName half'>" + d.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.value) + "</p></br>" +
+              "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>");
+        }
+      }
+    );
+
+// set updated height of chart
   var numberOfBars = d.children.length;
-  getHeight = numberOfBars * barHeight * 1.2 + (d.depth != 0 ? barHeight * 1.2 : 0) + 5;
-  if (getHeight < svgHeight) getHeight = svgHeight;
+  var getHeight = numberOfBars * barHeight * 1.2 + (d.depth != 0 ? barHeight * 1.2 : 0) + 5;
+  // if (getHeight < svgHeight) getHeight = svgHeight;
   console.log(getHeight);
 
-  d3.select("svg").attr("height", getHeight + margin.top + margin.bottom);
+  d3.select("svg").attr("height", getHeight + margin.top);
   d3.select(".background").attr("height", getHeight);
 
   d3.selectAll(".tillbaka")
@@ -407,6 +420,8 @@ function bar(d) {
     })
   ;
 
+
+
   var bar = svg.insert("g", ".y.axis")
       .attr("class", "enter")
       .attr("transform", function() {
@@ -415,7 +430,7 @@ function bar(d) {
     .selectAll("g")
       .data(d.children)
     .enter().append("g")
-      .style("cursor", function(d) { return !d.children ? null : "pointer"; })
+      .style("cursor", function(d) { return !d.children ? "default" : "pointer"; })
       .on("mouseover", function(d) {
         div.transition()
           .duration(400)
@@ -442,6 +457,7 @@ function bar(d) {
           .style("opacity", 0);
       });
 
+
   bar.append("text")
       .attr("x", -6)
       .attr("y", barHeight / 2)
@@ -461,6 +477,8 @@ function bar(d) {
       .attr("class", "bar");
 
   return bar;
+
+
 }
 
 // A stateful closure for stacking bars horizontally.
