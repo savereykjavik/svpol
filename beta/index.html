@@ -194,9 +194,9 @@ var displayNumber = function(n) {
 };
 
 // tooltip
-var div = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
-    .style("opacity", 0);
+// var div = d3.select("body").append("div")   
+//     .attr("class", "tooltip")               
+//     .style("opacity", 0);
 
 
 var svg = d3.select("#chart").append("svg")
@@ -472,19 +472,19 @@ function bar(d) {
         listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: 'pop' });
         updateAngular();
 
-        div.transition()
-          .duration(400)
-          .style("opacity", 1);
+        // div.transition()
+        //   .duration(400)
+        //   .style("opacity", 1);
 
-        div
-          .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em; margin-top: 10px;'>" + displayNumber(d.value) + "</b>")
-          .style("left", (d3.event.pageX + -60) + "px")
-          .style("top", (d3.event.pageY - 120) + "px");
+        // div
+        //   .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em; margin-top: 10px;'>" + displayNumber(d.value) + "</b>")
+        //   .style("left", (d3.event.pageX + -60) + "px")
+        //   .style("top", (d3.event.pageY - 120) + "px");
       })
       .on("click", function(d, i) {
-        div.transition()
-          .duration(400)
-          .style("opacity", 0);
+        // div.transition()
+        //   .duration(400)
+        //   .style("opacity", 0);
         down(d, i);
 
         $("html, body").animate({
@@ -496,9 +496,9 @@ function bar(d) {
         listaUtanfor.pop();
         updateAngular();
 
-        div.transition()
-          .duration(300)
-          .style("opacity", 0);
+        // div.transition()
+        //   .duration(300)
+        //   .style("opacity", 0);
       });
 
 
