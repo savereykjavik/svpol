@@ -206,6 +206,20 @@ svg {
   opacity: 0.5;
 }
 
+.legendR { 
+  -webkit-transition: all 0.6s ease-in-out 0s;
+-moz-transition: all 0.6s ease-in-out 0s;
+-o-transition: all 0.6s ease-in-out 0s;
+-ms-transition: all 0.6s ease-in-out 0s;
+transition: all 0.6s ease-in-out 0s;
+ } /*Hover animation */
+
+.pop {
+  background-color: #f8f8f8 !important;
+  border: 5px dotted #0a8794 !important;
+  color: #0a8794 !important;
+}
+
 #chart {
   height:100%;
   float: left;
@@ -220,13 +234,14 @@ svg {
 }
 
 .legendR {
+  border: 5px solid #0a8794;
   margin-bottom: 10px;
   background-color: #0a8794;
-  font-size: 1.1em;
+  font-size: 1em;
   line-height: 1.4;
   color: #fff;
   border-radius: 22px;
-  padding: 30px 20px 40px 20px;
+  padding: 15px 20px 15px 20px;
   font-family: "Abril Fatface", cursive;
   text-align: center;
 }
