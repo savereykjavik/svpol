@@ -164,8 +164,6 @@ var divR = d3.select("#chart").append("div")
     .attr("height", 600 + margin.top + margin.bottom)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var legend0 = d3.select(".legendR").append("div").attr("class", "legend0");
-
 svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -385,6 +383,7 @@ function bar(d) {
 
 
     divR.html(
+
       function() {
         if (d.depth == 0) {
           return  "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>";
