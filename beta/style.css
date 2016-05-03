@@ -9,6 +9,8 @@ html,body {
     font-size: 14px;
 }
 
+
+
 /*color schemes*/
 .teal {
 
@@ -206,14 +208,6 @@ svg {
   opacity: 0.5;
 }
 
-.legendR { 
-  -webkit-transition: all 0.5s ease-in-out 0s;
--moz-transition: all 0.5s ease-in-out 0s;
--o-transition: all 0.5s ease-in-out 0s;
--ms-transition: all 0.5s ease-in-out 0s;
-transition: all 0.5s ease-in-out 0s;
- } /*Hover animation */
-
 .pop {
   background-color: #f8f8f8 !important;
   border: 5px dotted #0a8794 !important;
@@ -244,11 +238,6 @@ transition: all 0.5s ease-in-out 0s;
   padding: 15px 20px 15px 20px;
   font-family: "Abril Fatface", cursive;
   text-align: center;
-
-    -webkit-transition:height 300ms ease-in-out, height 300ms ease-in-out;
-    -moz-transition:height 300ms ease-in-out, height 300ms ease-in-out;
-    -o-transition:height 300ms ease-in-out, height 300ms ease-in-out;
-    transition:height 300ms ease-in-out, height 300ms ease-in-out;
 }
 
 .legendName {

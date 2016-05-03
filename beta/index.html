@@ -5,6 +5,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="http://code.angularjs.org/1.2.2/angular-animate.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 
@@ -85,13 +86,20 @@
     </div>
 
     <!-- angular -->
-    <div ng-app="myApp">
+    <div ng-app="myApp" >
       <div id="my-ctrl" ng-controller="myCtrl">
         <div id="legend">
-          <div ng-repeat="foo in myList" class="legendR {{foo.style}}">
-            <p class="legendName">{{foo.text}}</p>
-            <p class="legendNo">{{foo.value}}</p>
+
+          <div ng-repeat="legend in legends" ng-animate=" 'animate' " class="legendR {{legend.style}}">
+            <p class="legendName">{{legend.text}}</p>
+            <p class="legendNo">{{legend.value}}</p>
           </div>
+
+          <div ng-show="hoverNode.visible" ng-animate=" 'animate' " class="legendR pop">
+            <p class="legendName">{{hoverNode.text}}</p>
+            <p class="legendNo">{{hoverNode.value}}</p>
+          </div>
+
         <div>
       </div>
     <div>
@@ -102,23 +110,14 @@
 
 <script language="javascript">
 
-  var listaUtanfor = [
-  ];
-
-  function addNewThing(text, color) {
-    listaUtanfor.push({text:text, color:color});
-    updateAngular();
-  }
-
-  function removeThing() {
-    listaUtanfor.pop();
-    updateAngular();
-  }
+  var listaUtanfor = [];
+  var hoverNode = {visible: false};
 
   // ======= angular things ===================================================================
 
   function initScope($scope) {
-    $scope.myList = listaUtanfor;
+    $scope.legends = listaUtanfor;
+    $scope.hoverNode = hoverNode;
   }
 
   function updateAngular() {
@@ -128,6 +127,7 @@
 
   var app = angular.module('myApp', []);
   app.controller('myCtrl', initScope);
+
 </script>
 
 
@@ -135,9 +135,7 @@
 
 <script>
 
-// get scroll position of chart div
-var chartDiv = $( "#chart" );
-var chartPos = chartDiv.position();
+
 
 var formatNumber = d3.format(",");
 
@@ -193,10 +191,12 @@ var displayNumber = function(n) {
   });
 };
 
-// tooltip
-// var div = d3.select("body").append("div")   
-//     .attr("class", "tooltip")               
-//     .style("opacity", 0);
+// get bottom of viewport
+var scrollBottom = $(window).scrollTop() + $(window).height();
+// get scroll position of chart div
+var chartDiv = $( "#chart" );
+var chartPos = chartDiv.position();
+
 
 
 var svg = d3.select("#chart").append("svg")
@@ -239,20 +239,37 @@ d3.json("budget.json", function(error, root) {
   down(root, 0);
 });
 
+
+function createLegend(d) {
+  var legend = [];
+  var first = true;
+  do {
+    legend.push({text: d.name, value: displayNumber(d.value), style: first ? '' : 'half'});
+    first = false;
+    d = d.parent;
+  }
+  while (d);
+  return legend.reverse();
+} 
+
+
 function down(d, i) {
 
   if (!d.children || this.__transition__) return;
   var end = duration + d.children.length * delay;
-  listaUtanfor.pop();
 
-  listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: '' });
-
-  for (var j = listaUtanfor.length-1; j > 0; j--) {
-    listaUtanfor[j-1].style = 'half';
-  };
-
-
+  listaUtanfor = createLegend(d);
   updateAngular();
+
+  // listaUtanfor.pop();
+  // listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: '' });
+
+  // for (var j = listaUtanfor.length-1; j > 0; j--) {
+  //   listaUtanfor[j-1].style = 'half';
+  // };
+
+  // console.log(d);
+  // updateAngular();
 
   // Mark any currently-displayed bars as exiting.
   var exit = svg.selectAll(".enter")
@@ -344,9 +361,12 @@ function up(d) {
   if (!d.parent || this.__transition__) { return;
   }
 
-  listaUtanfor.pop();
-  listaUtanfor[listaUtanfor.length - 1].style = '';
+  listaUtanfor = createLegend(d.parent);
   updateAngular();
+
+  // listaUtanfor.pop();
+  // listaUtanfor[listaUtanfor.length - 1].style = '';
+  // updateAngular();
 
   var end = duration + d.children.length * delay;
 
@@ -469,36 +489,25 @@ function bar(d) {
       .style("cursor", function(d) { return !d.children ? "default" : "pointer"; })
       .on("mouseover", function(d) {
 
-        listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: 'pop' });
+        hoverNode.text = d.name; 
+        hoverNode.value = displayNumber(d.value);
+        hoverNode.visible = true;
         updateAngular();
 
-        // div.transition()
-        //   .duration(400)
-        //   .style("opacity", 1);
-
-        // div
-        //   .html(d.name + "<br/>"  + "<b style='font-size:130%; line-height:1.6em; margin-top: 10px;'>" + displayNumber(d.value) + "</b>")
-        //   .style("left", (d3.event.pageX + -60) + "px")
-        //   .style("top", (d3.event.pageY - 120) + "px");
       })
       .on("click", function(d, i) {
-        // div.transition()
-        //   .duration(400)
-        //   .style("opacity", 0);
         down(d, i);
-
+        hoverNode.visible = false;
+        updateAngular();
         $("html, body").animate({
           scrollTop:$('#chart').position().top-40
         }, "slow");
       })
       .on("mouseout", function(d) {
 
-        listaUtanfor.pop();
+        hoverNode.visible = false;
         updateAngular();
 
-        // div.transition()
-        //   .duration(300)
-        //   .style("opacity", 0);
       });
 
 
