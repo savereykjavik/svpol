@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
   <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 
@@ -79,9 +80,55 @@
 
 <div class="container-fluid light-gray" id="chartholder">
   <hr>
-  <div class="container" id="chart">
+  <div class="container">
+    <div id="chart">
+    </div>
+
+    <!-- angular -->
+    <div ng-app="myApp">
+      <div id="my-ctrl" ng-controller="myCtrl">
+        <div id="legend">
+          <div ng-repeat="foo in myList" class="legendR {{foo.style}}">
+            <p class="legendName">{{foo.text}}</p>
+            <p class="legendNo">{{foo.value}}</p>
+          </div>
+        <div>
+      </div>
+    <div>
+    <!-- end angular -->
+
   </div>
 </div>
+
+<script language="javascript">
+
+  var listaUtanfor = [
+  ];
+
+  function addNewThing(text, color) {
+    listaUtanfor.push({text:text, color:color});
+    updateAngular();
+  }
+
+  function removeThing() {
+    listaUtanfor.pop();
+    updateAngular();
+  }
+
+  // ======= angular things ===================================================================
+
+  function initScope($scope) {
+    $scope.myList = listaUtanfor;
+  }
+
+  function updateAngular() {
+    angular.element(document.getElementById("my-ctrl"))
+      .scope().$apply(initScope);
+  }
+
+  var app = angular.module('myApp', []);
+  app.controller('myCtrl', initScope);
+</script>
 
 
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -158,12 +205,6 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var divR = d3.select("#chart").append("div")
-    .attr("width", widthR)
-    .attr("class", "legendR")
-    .attr("height", 600 + margin.top + margin.bottom)
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -202,6 +243,16 @@ function down(d, i) {
 
   if (!d.children || this.__transition__) return;
   var end = duration + d.children.length * delay;
+
+
+  listaUtanfor.push({text: d.name, value: displayNumber(d.value), style: '' });
+
+  for (var j = listaUtanfor.length-1; j > 0; j--) {
+    listaUtanfor[j-1].style = 'half';
+  };
+
+
+  updateAngular();
 
   // Mark any currently-displayed bars as exiting.
   var exit = svg.selectAll(".enter")
@@ -289,8 +340,13 @@ function down(d, i) {
 }
 
 function up(d) {
+
   if (!d.parent || this.__transition__) { return;
   }
+
+  listaUtanfor.pop();
+  listaUtanfor[listaUtanfor.length - 1].style = '';
+  updateAngular();
 
   var end = duration + d.children.length * delay;
 
@@ -376,30 +432,11 @@ function up(d) {
       .duration(end);
 }
 
+
 // Creates a set of bars for the given data node, at the specified index.
 function bar(d) {
 
-  console.log(d);
 
-
-    divR.html(
-
-      function() {
-        if (d.depth == 0) {
-          return  "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>";
-        } else if 
-        (d.depth == 1) {
-          return  "<p class='legendName half'>" + d.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.value) + "</p></br>" +
-                  "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>";
-        } 
-        else if (d.depth == 2) {
-            return (
-              "<p class='legendName half'>" + d.parent.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.parent.value) + "</p></br>" +
-              "<p class='legendName half'>" + d.parent.name + "</p>"  + "<p class='legendNo half'>" + displayNumber(d.parent.value) + "</p></br>" +
-              "<p class='legendName'>" + d.name + "</p>"  + "<p class='legendNo'>" + displayNumber(d.value) + "</p>");
-        }
-      }
-    );
 
 // set updated height of chart
   var numberOfBars = d.children.length;
@@ -444,11 +481,10 @@ function bar(d) {
           .duration(400)
           .style("opacity", 0);
         down(d, i);
-        if ($(document).scrollTop() > chartPos.top) {
-          $("html, body").animate({
-            scrollTop:$('#chart').position().top-40
-          }, "slow");
-        }
+
+        $("html, body").animate({
+          scrollTop:$('#chart').position().top-40
+        }, "slow");
       })
       .on("mouseout", function(d) {
         div.transition()
