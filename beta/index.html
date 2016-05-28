@@ -255,6 +255,8 @@ function createLegend(d) {
 
 function down(d, i) {
 
+  console.log(d.name, d.value);
+
   if (!d.children || this.__transition__) return;
   var end = duration + d.children.length * delay;
 
